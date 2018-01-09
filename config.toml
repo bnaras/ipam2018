@@ -43,7 +43,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "\\.rst$", "\\.
 [[menu.main]]
     name = "Home"
          identifier = "Level-01"
-    	 url = "index.html"
+    	 url = "/index.html"
 	 weight = -22
 
 [[menu.main]]
