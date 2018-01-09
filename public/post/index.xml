@@ -157,7 +157,7 @@ suppressMessages(suppressWarnings(library(CVXR))) p &amp;lt;- 10 n &amp;lt;- 100
       <pubDate>Thu, 02 Nov 2017 00:00:00 +0000</pubDate>
       
       <guid>/post/tutorial/</guid>
-      <description>Topics  Set up R and RStudio Set up Development Tools Quick Tour of RStudio   Quick Tour of R  The R Language R Numerics R Packages R Web Technologies   Applications  Distributed Computation on Horizontally Partitioned Data Homomorphic Computations Vertically Partitioned Lasso Vertically Partitioned Logistic Fit   Computations on Encrypted Data  Homomorphic Computation Introduction Homomorphic MLE Estimation of a Poisson Parameter Homomorphic Distributed Cox Fit Privacy Preserving Linear Regression communicated by Kee Siong Ng.</description>
+      <description>Topics  Set up R and RStudio Set up Development Tools Quick Tour of RStudio   Overview of R and Some Packages  The R Language R Numerics R Packages R Web Technologies [Convex Optimization in R] We discuss the recent package CVXR that provides a domain specific language for Convex Optimization.   Applications  Distributed Computation on Horizontally Partitioned Data We discuss an open approach for distributed computing using the Narasimhan et al.</description>
     </item>
     
   </channel>

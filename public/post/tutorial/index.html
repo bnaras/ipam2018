@@ -33,35 +33,43 @@
 <li><a href="/post/tutorial/R-Studio/">Quick Tour of RStudio</a></li>
 </ul>
 </section>
-<section id="quick-tour-of-r" class="level2">
-<h2>Quick Tour of R</h2>
+<section id="overview-of-r-and-some-packages" class="level2">
+<h2>Overview of R and Some Packages</h2>
 <ul>
 <li><a href="/post/tutorial/R-Tour/">The R Language</a></li>
 <li><a href="/post/tutorial/R-Numerics/">R Numerics</a></li>
 <li><a href="/post/tutorial/R-Packages/">R Packages</a></li>
 <li><a href="/post/tutorial/R-Web-Tech/">R Web Technologies</a></li>
+<li>[Convex Optimization in R] We discuss the recent package <a href="https://cvxr.rbind.io"><code>CVXR</code></a> that provides a domain specific language for Convex Optimization.</li>
 </ul>
 </section>
 <section id="applications" class="level2">
 <h2>Applications</h2>
 <ul>
-<li><a href="/post/tutorial/horizontal-partioning/">Distributed Computation on Horizontally Partitioned Data</a></li>
-<li><a href="/post/tutorial/horizontal/">Homomorphic Computations</a></li>
-<li><a href="/post/tutorial/vertical-partitioned-lasso/">Vertically Partitioned Lasso</a></li>
-<li><a href="/post/tutorial/vertical-partitioned-logistic-ridged/">Vertically Partitioned Logistic Fit</a></li>
+<li><a href="/post/tutorial/horizontal-partioning/">Distributed Computation on Horizontally Partitioned Data</a> We discuss an open approach for distributed computing using the <span class="citation" data-cites="distcomp">Narasimhan et al. (<a href="#ref-distcomp">2017</a>)</span> package.</li>
+<li><a href="/post/tutorial/vertical-partitioned-lasso/">Vertically Partitioned Lasso</a> We discuss a direct approach to understand the troublesome issues.</li>
+<li><a href="/post/tutorial/vertical-partitioned-logistic-ridged/">Vertically Partitioned Logistic Fit</a> We show how the Convex Optimization Tools in R can be leveraged to implement the approach of <span class="citation" data-cites="doi:10.1093/jamia/ocv146">Li et al. (<a href="#ref-doi:10.1093/jamia/ocv146">2016</a>)</span> .</li>
 </ul>
 </section>
 <section id="computations-on-encrypted-data" class="level2">
 <h2>Computations on Encrypted Data</h2>
 <ul>
-<li><a href="/post/tutorial/homomorphing-intro/">Homomorphic Computation Introduction</a></li>
-<li><a href="/post/tutorial/homomorphing-mle/">Homomorphic MLE Estimation of a Poisson Parameter</a></li>
-<li><a href="/post/tutorial/homomorphing-DHCox/">Homomorphic Distributed Cox Fit</a></li>
-<li><a href="/post/tutorial/homomorphing-regression">Privacy Preserving Linear Regression</a> communicated by Kee Siong Ng.</li>
+<li><a href="/post/tutorial/homomorphing-intro/">Homomorphic Computation</a> We review some basics of Homomorphic Computation.</li>
+<li><a href="/post/tutorial/homomorphing-mle/">Homomorphic MLE Estimation of a Poisson Parameter</a> We estimate a Poisson parameter using encrypted data.</li>
+<li><a href="/post/tutorial/homomorphing-DHCox/">Homomorphic Distributed Cox Fit</a> We fit a Stratified Cox Model using encrypted data.</li>
+<li><a href="/post/tutorial/homomorphing-regression">Privacy Preserving Linear Regression</a> Using batch gradient descent, we perform a privacy preserving linear regression fit. This implementation communicated by Kee Siong Ng.</li>
 </ul>
 </section>
-<section id="references" class="level2">
+<section id="references" class="level2 unnumbered">
 <h2>References</h2>
+<div id="refs" class="references">
+<div id="ref-doi:10.1093/jamia/ocv146">
+<p>Li, Yong, Xiaoqian Jiang, Shuang Wang, Hongkai Xiong, and Lucila Ohno-Machado. 2016. “VERTIcal Grid lOgistic Regression (Vertigo).” <em>Journal of the American Medical Informatics Association</em> 23 (3):570–79. <a href="https://doi.org/10.1093/jamia/ocv146" class="uri">https://doi.org/10.1093/jamia/ocv146</a>.</p>
+</div>
+<div id="ref-distcomp">
+<p>Narasimhan, Balasubramanian, Daniel Rubin, Samuel Gross, Marina Bendersky, and Philip Lavori. 2017. “Software for Distributed Computation on Medical Databases: A Demonstration Project.” <em>Journal of Statistical Software, Articles</em> 77 (13):1–22. <a href="https://doi.org/10.18637/jss.v077.i13" class="uri">https://doi.org/10.18637/jss.v077.i13</a>.</p>
+</div>
+</div>
 </section>
 
 
