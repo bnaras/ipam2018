@@ -1,4 +1,4 @@
-baseurl = "https://ipam2018.netlify.com"
+baseurl = "https://ipam2018.netlify.com/"
 languageCode = "en-us"
 title = "IPAM 2018 Workshop"
 theme = "hugo-alabaster-theme"
