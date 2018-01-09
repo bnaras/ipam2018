@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head lang="en-us">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+	<meta name="description" content="Algorithmic Challenges in Protecting Privacy for Biomedical Data">
+	<meta name="generator" content="Hugo 0.30.2" />
+	
+	<title>Lasso on Vertically Partitioned Data &mdash; IPAM 2018 Workshop</title>
+	
+	<link rel="stylesheet" href="/css/alabaster.css" type="text/css" />
+	<link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+
+	
+
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+</head>
+
+	<body role="document">
+		<div class="document">
+			<div class="documentwrapper">
+				<div class="bodywrapper">
+					<div class="body" role="main">
+						
+	<h1>Lasso on Vertically Partitioned Data</h1>
+	
+	<section id="introduction" class="level2">
+<h2>Introduction</h2>
+<p>Lasso on vertically partitioned data provides an illustrative example of the issues with vertically partitioned data.</p>
+<p>Consider a dataset with response <span class="math inline">\(y\)</span> where the predictor matrix <span class="math inline">\(X\)</span> is vertically partitioned among three sites.</p>
+<p><span class="math display">\[
+X = [X_1, X_2, X_3]
+\]</span></p>
+<p>where <span class="math inline">\(X\)</span> is <span class="math inline">\(n\times p\)</span>, <span class="math inline">\(X_i\)</span> is <span class="math inline">\(n\times p_k\)</span>, <span class="math inline">\(k= 1, 2, 3\)</span> and <span class="math inline">\(\sum_{i=1}^3 p_k = p.\)</span></p>
+<p>We wish to fit a lasso model:</p>
+<p>[</p>
+<p>\begin{array}{ll}  &amp; |y - X|_2^2 + ||_1). \end{array}</p>
+<p>]</p>
+<p>For purposes of illustration, we generate a dataset.</p>
+<pre class="r"><code>set.seed(129)
+n &lt;- 100
+p &lt;- 5
+X &lt;- matrix(rnorm(n * p), n, p)
+X1 &lt;- X[, 1:2]
+X2 &lt;- X[, 3, drop = FALSE]
+X3 &lt;- X[, 4:5]
+beta_true &lt;- c(5, 0, 0, 2, 2)
+y &lt;- X %*% beta_true + rnorm(n)</code></pre>
+</section>
+<section id="the-aggregated-fit" class="level2">
+<h2>The Aggregated Fit</h2>
+<p>If the data were not vertically partitioned, the fit would be straightforward for a specified <span class="math inline">\(\lambda = 2\)</span> say. We would just solve the optimization problem, the primal problem.</p>
+<pre class="r"><code>suppressWarnings(suppressMessages(library(CVXR)))
+
+beta &lt;- Variable(p)
+lambda &lt;- 2
+p_obj &lt;- sum_squares(y - X %*% beta) + lambda / 2 * p_norm(beta, 1)
+p_prob &lt;- Problem(Minimize(p_obj))
+p_result &lt;- solve(p_prob)</code></pre>
+<p>The resulting value of the primal objective is 109.5436324 and the fitted estimate is</p>
+<pre class="r"><code>(beta_primal &lt;- p_result$getValue(beta))</code></pre>
+<pre><code>##              [,1]
+## [1,]  4.937721027
+## [2,] -0.007471594
+## [3,]  0.094597544
+## [4,]  2.065937851
+## [5,]  2.130020709</code></pre>
+</section>
+<section id="the-lasso-dual" class="level2">
+<h2>The Lasso Dual</h2>
+<p>The dual problem for lasso for that <span class="math inline">\(\lambda\)</span> is</p>
+<p>[</p>
+<p>\begin{array}{ll}  &amp; |y - u|_2^2 \end{array}</p>
+<p> |X^Tu|_{} .</p>
+<p>]</p>
+<p>In the above <span class="math inline">\(u\)</span> is an <span class="math inline">\(n\)</span>-vector of parameters and the constraint</p>
+<p>[ X^Tu = \begin{array}{l} X_1<sup>Tu\ X_2</sup>Tu\ X_3^Tu \end{array}</p>
+<p>]</p>
+<p>where each <span class="math inline">\(X_k^Tu\)</span> is <span class="math inline">\(p_k\times n\)</span>. It follows that</p>
+<p>[</p>
+<p>|X^Tu|_{} = </p>
+<p>]</p>
+<p>Thus, if each site <span class="math inline">\(k\)</span> provides <span class="math inline">\(|X_k^Tu|_{\infty}\)</span> for a given <span class="math inline">\(u\)</span>, the constraint can be computed in a distributed fashion by a master performing the optimization.</p>
+<p>So the dual is solvable in a distributed fashion.</p>
+<p>Indeed, we can compute this to check.</p>
+<pre class="r"><code>u &lt;- Variable(n)
+d_obj &lt;- 0.5 * sum_squares(y - u)
+##d_constraint &lt;- list(p_norm(t(X) %*% u) &lt;= lambda)
+d_constraint &lt;- list(
+    max(p_norm(t(X1) %*% u, Inf),
+        p_norm(t(X2) %*% u, Inf),
+        p_norm(t(X3) %*% u, Inf)) &lt;= lambda
+)
+    
+d_prob &lt;- Problem(Minimize(d_obj), d_constraint)
+d_result &lt;- solve(d_prob)
+uVal &lt;- d_result$getValue(u)</code></pre>
+<p>So far, so good.</p>
+</section>
+<section id="the-catch" class="level2">
+<h2>The Catch</h2>
+<p>Now that we have solved the dual problem, we need to recover the solution to the original primal problem. The correspondence between the primal solution <span class="math inline">\(\hat{\beta}\)</span> and dual solution <span class="math inline">\(u\)</span> is:</p>
+<p>[</p>
+<p>X = y - u.</p>
+<p>]</p>
+<p>The solution is, of course,</p>
+<p>[  = (X<sup>TX)</sup>-1X^T(y- u).</p>
+<p>]</p>
+<p>The <span class="math inline">\(X^TX\)</span> matrix kills us because it involves cross-site terms like <span class="math inline">\(X_i^TX_j\)</span>:</p>
+<p>If we ignored that fact, we can indeed check that we get the right solution.</p>
+<pre class="r"><code>XtX &lt;- t(X) %*% X
+beta_dual&lt;- solve(XtX) %*% t(X) %*% (y - uVal)
+cbind(beta_dual, beta_primal)</code></pre>
+<pre><code>##               [,1]         [,2]
+## [1,]  4.919405e+00  4.937721027
+## [2,] -9.091532e-06 -0.007471594
+## [3,]  7.857126e-02  0.094597544
+## [4,]  2.047664e+00  2.065937851
+## [5,]  2.110122e+00  2.130020709</code></pre>
+</section>
+<section id="references" class="level2">
+<h2>References</h2>
+</section>
+
+
+
+						
+					</div>
+				</div>
+			</div>
+			
+			<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+	<div class="sphinxsidebarwrapper">
+		<p class="logo">
+			<a href="/">
+				<img class="logo" src="/favicon.ico" alt="Logo"/>
+				<h1 class="logo logo-name"></h1>
+			</a>
+		</p>
+		
+		<p class="blurb">Algorithmic Challenges in Protecting Privacy for Biomedical Data</p>
+
+		
+
+	<p>
+		<iframe src="https://ghbtns.com/github-btn.html?user=bnaras&repo=ipam2018&type=watch&count=true&size=large"
+		allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+	</p>
+
+	
+
+	
+		
+
+		
+
+<h3>Navigation</h3>
+<ul>
+	
+	<li class="toctree-l1">
+		<a class="reference internal" href="index.html">Home</a>
+	</li>
+	
+	<li class="toctree-l1">
+		<a class="reference internal" href="https://github.com/bnaras/ipam2018">Github</a>
+	</li>
+	
+	<li class="toctree-l1">
+		<a class="reference internal" href="post/tutorial/">Tutorial</a>
+	</li>
+	
+</ul>
+
+
+		<h3>Related Topics</h3>
+<ul>
+  <li><a href="/">Documentation overview</a><ul>
+  <li>Previous: <a href="/post/tutorial/r-numerics/" title="Linear Algebra and Numerical Methods">Linear Algebra and Numerical Methods</a></li>
+  <li>Next: <a href="/post/tutorial/vertical-partitioned-lasso/" title="Lasso on Vertically Partitioned Data">Lasso on Vertically Partitioned Data</a></li>
+</ul>
+
+	</div>
+</div>
+<div class="clearer"></div>
+</div>
+			<script type="text/javascript" src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+			
+
+			
+
+			
+		</div>
+	</body>
+</html>

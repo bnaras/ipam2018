@@ -1,0 +1,29 @@
+---
+title: Set up R and RStudio
+author: Balasubramanian Narasimhan
+date: '2018-01-01'
+bibliography: ../bibtex/ipam2018.bib
+link-citations: true
+categories: []
+tags: []
+---
+
+# Introduction
+
+[R language](https://www.r-project.org) implementations are freely
+available for Macs and Windows and and can be installed from any of
+the CRAN (Comprehensive R Archive Network) mirrors. RStudio is an IDE
+(Integrated Development Environment) for R and is also available in a
+free version.
+
+1. Go to the [CRAN](https://cloud.r-project.org/) website and download
+   it for your Mac or PC. (We assume no one is using Linux; if you are
+   that advanced, then you already know what to do!)
+
+2. Install the free
+   [RStudio](https://www.rstudio.com/products/rstudio/download/)
+   version.
+
+RStudio makes it very easy to learn and use R, providing a number of
+useful features that many find indispensable.
+

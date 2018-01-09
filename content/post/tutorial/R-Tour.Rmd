@@ -1,0 +1,396 @@
+---
+title: Quick Intro to R
+author: Balasubramanian Narasimhan
+date: '2018-01-01'
+bibliography: ../bibtex/ipam2018.bib
+link-citations: true
+categories: []
+tags: []
+---
+
+## About the R language, briefly
+
+If you are used to traditional computing languages, you will find R
+different in many ways. The basic ideas behind R date back four
+decades and have a strong flavor of exploration: one can grapple with
+data, understand its structure, visualize it, summarize it
+etc. Therefore, a common way people use R is by typing a command and
+immediately see the results. (Of course, scripts can also be written
+and fed to R for batch execution.)
+
+The core of R itself is reasonably small, but over time, it has also
+become a vehicle for researchers to disseminate new tools and
+methodologies via packages. That is one reason for R's popularity:
+there are thousands of packages (12000+ as of this writing) that extend
+R in many useful ways.
+
+The [CRAN](https://cloud.r-project.org) website is something you
+will consult frequently for both the software, documentation and
+packages others have developed.
+
+## Some detail on the language
+
+Consider the following code snippet which creates a few variables.
+
+```{r}
+x <- 1
+y = 2
+z <- x + y
+```
+
+Like other computer languages, R has ways of naming things in the
+language. Above, we used `x` as a name for the value 1 and `y` for the
+value 2. The names have to follow some rules. It is sufficient to be
+aware that they must start with an alphabetic character and can
+contain periods and underscores. Also, for obvious reasons, space is
+not permitted. (It is common to see names for variables such as
+`male.cholesterol` or `male_cholesterol`!)
+
+__Nomenclature__: R users tend to use the word _objects_ to refer to R
+variables, functions, datasets, etc.
+
+
+John Chambers: 
+
+- Everything that exists is an object.
+- Everything that happens is a function call.
+
+So, in R, all action occurs via _functions_. Even something as
+simple as
+
+```{r}
+1 + 2
+```
+is computed via functions.
+
+### Should I use `=` or `<-` for assignment?
+
+In R, both `=` and `<-` can be used for assigning a value to
+variables. However, using `<-` (which I do) is the best thing to do.
+
+
+### Vectors and Indexing
+
+1. R has no concept of a scalar. A scalar is simply a vector of length 1.
+
+2. R can handle both numeric and non-numeric (non-numeric)
+data.
+
+```{r}
+x <- c(1.0, 2)
+x
+typeof(x)
+```
+
+
+```{r}
+y <- c("abc", "d", "e", 'fgh')
+y
+typeof(y)
+```
+
+```{r}
+z <- 1:5
+z
+typeof(z)
+```
+
+```{r}
+w <- c(TRUE, FALSE, TRUE, TRUE)
+w
+typeof(w)
+```
+
+The `c` stands for the _combine_ function and it creates a vector of
+two numbers for `x` and a vector of four strings for `y`. Note how
+both single and double quotes may be used (useful when we have quotes
+within strings). For `z` we use a shortcut `1:5` for creating a
+sequence of integers from 1 to 5. And finally, `w` is a logical
+vector; R recognizes the symbols `TRUE` and `FALSE` as special
+symbols; you cannot have a variable named `TRUE` for example! (The
+`typeof` function is useful to understand basic underlying types.)
+
+3. _R uses 1-based indexing!_
+
+Often, one needs to access a part, or a subset or a slice of a
+vector. This is done by specifying indices indexing construct
+
+```{r}
+## The first element; indexing begins from 1
+x[1]
+## The third element of y
+y[3]
+## The second to fourth element of z
+z[2:4]
+## The first and last element of y
+y[c(1, length(y))]
+```
+
+Note the use of the function `length` that returns the length of `y`
+(4 for us).
+
+4. Nothing stops one from combining types.
+
+```{r}
+## Combine x and y into one
+c(x, y)
+```
+
+Note, however, that the last combine operation silently coerces
+everything to strings. This is because vectors contain _homogeneous_
+elements. That seems limiting, because sometimes you may have both
+types of data and you don't want to be converting things back and
+forth.
+
+5. Lists are versatile data structures that can grow or shrink and
+contain heterogeneous data. They are constructed using the `list`
+function:
+
+```{r}
+aList <- list(1, 2, list(1, 2, "abc"))
+aList
+```
+Note how a list prints differently. Individual elements of the list,
+unlike the vectors above, are accessed using the double bracket
+notation, suggested by the printing. Note also that there is no
+coercion of types.
+
+```{r}
+## The second element
+aList[[2]]
+## The third element, which is itself a list!
+aList[[3]]
+## The second element of the third element
+aList[[3]][[2]]
+```
+
+With lists, the single bracket indexing behaves differently from
+double bracket indexing.
+
+```{r}
+aList[[2]]
+aList[2]
+```
+The difference is clear from the way each is printed: the former is
+just the second element of the list whereas the latter is another
+list whose second element is from the original list.
+
+The rule is simple: single bracket indexing returns the same type of
+object.
+
+```{r}
+typeof(aList[[2]])
+typeof(aList[2])
+```
+
+6. Negative indexing is a convenient way to drop some elements from a
+vector.
+
+```{r}
+## Drop the first element of x
+x[-1]
+## Drop the last element of y
+y[-length(y)]
+## Drop the first and last element of aList
+aList[c(-1, -length(aList))]
+```
+
+Mixing of negative and non-negative indices is not permitted.
+
+```{r, error = TRUE}
+## This results in an error
+y[c(-1, 3:4)]
+```
+
+R also allows logical indexing:
+
+```{r}
+## Select y elements where w is TRUE
+y[w]
+```
+will select the first, third and fourth elements and drop the
+rest. Selecting elements based on conditions is very useful and we
+will see further examples.
+
+8. Missing and `NULL` values
+
+R has a notion of a missing value that can be used to indicate data is
+missing for some cases, an all too real phenomenon. It is denoted by
+`NA`.
+
+```{r}
+miss1 <- c(1.0, NA, 2.0)
+2 * miss1
+```
+Notice how the last operation did the appropriate thing with the
+missing value. It is extremely convenient to be able to use missing
+values as you would any other object in R. But numerical computations
+will have to provide hints on how to handle the missing values. For
+example, the `mean` function computes the average of a set of numbers.
+
+```{r}
+## No hint to process missing values
+mean(miss1)
+## Remove missing values before processing
+mean(miss1, na.rm = TRUE)
+```
+
+Another value `NULL` is used to indicate _nothing is present_. Note
+that it is semantically different from a missing value.
+
+```{r}
+NULL
+## Combine nothing
+c()
+```
+One can check for missing-ness or nullity using the `is` family of
+functions.
+
+```{r}
+is.null(c())
+is.null(NA)
+## This should produce a warning
+is.na(c())
+is.na(NA)
+```
+There are many others: `is.numeric`, `is.list`, `is.vector`, etc.
+
+9. Arithmetic and logical operations
+
+The standard operations are all available: `+`, `-`, `*`
+(multiplication), `/` division. In R, when you perform arithmetic on
+vectors, the operations happen on all elements.
+
+```{r}
+## Add two vectors
+1:3 + 2:4
+## Multiply a vector by 2
+2 * 1:3
+## Better to have parenthesis
+2 * (1:3)
+## Divide
+c(2, 4, 6) / c(2, 4, 6)
+## Halve
+c(2, 4, 6) / 2
+## R recycles shorter vector to match length
+c(2, 4, 6, 8) / c(1, 2)
+## Above is same as
+c(2, 4, 6, 8) / c(1, 2, 1, 2)
+## Warning, but not error below
+c(2, 4, 6) / c(1, 2)
+```
+The last operation shows how R tries to make two vectors conform in
+length and provides a warning. _Good code avoids relying on such
+behaviors as they can cause unpredictable errors._
+
+The usual comparison operators are available: `==` for equality, `!=`
+for not equal to, `>=` for greater than or equal to, etc.
+
+```{r}
+xx <- 1:3
+xx == xx
+## 1 is expanded to match length of xx
+xx > 1
+```
+
+10. Comparison operators can be used to select subsets of vectors.  Some
+examples with the understanding that `a %% 2` returns the reminder
+upon division of a by 2.
+
+```{r}
+xx <- 1:10
+## Pick all numbers >= 5
+xx[ xx >= 5]
+## Pick even numbers from 1 to 10
+xx[ xx %% 2 == 0]
+## Pick odd numbers from 1 to 10
+xx[ xx %% 2 != 0]
+```
+
+11. Coercion
+
+We saw above that some functions, can silently coerce the results to
+something meaningful. In many case, such coercions can be useful.
+
+How many even numbers between 1 and 10?
+
+```{r}
+xx <- 1:10
+xx %% 2 == 0
+sum(xx %% 2 == 0)
+```
+Here `xx %% 2 == 0` is a list of 10 logical values with `TRUE`
+wherever we have an even number. The function `sum` converts `TRUE`
+values to 1 and `FALSE` values to 0 and results to provide the answer.
+
+R usually coerces the results where possible to the type that can
+accomodate the result. If it cannot, it signals an error.
+
+There are many explicit coercion functions such as `as.numeric`,
+`as.integer`, `as.list`.
+
+```{r}
+xx <- 1:5
+as.integer(xx %% 2 == 0)
+as.character(xx)
+as.list(xx)
+```
+
+Coercion functions are useful when processing external data for
+computational work.
+
+
+12. Naming
+
+R allows one to add _names_ to objects.
+
+```{r}
+named_x <- c(a = 1.02, b = 2, 3)
+named_x
+```
+Above, only two of the three elements were named. This makes the third
+element have an empty name. The function `names` allows one to
+retrieve the names of an object.
+
+```{r}
+names(named_x)
+```
+The naming facility allows one to access elements of vectors using
+names rather than indices.
+
+```{r}
+## Equivalent to named_x[2]
+named_x["b"]
+## Equivalent to named_x[1:2]
+named_x[c("a", "b")]
+```
+
+_Naming is an extremely useful tool in writing readable code_. One
+might worry about a performance penalty but it is negligible in most
+cases and the gains in readability far outweigh any inefficiencies.
+
+Naming works for lists too.
+
+```{r}
+named_list <- list(x = x, y = y, zed = z)
+named_list[c("x", "zed")]
+```
+
+With lists, the individual _elements_ can also be accessed using the
+_dollar_ (`$`) notation.
+
+```{r}
+named_list$zed
+```
+
+Much of R code and functions exploit naming; many functions return
+more than one value and they are often stuffed into a named vector or
+list.
+
+```{r}
+aSummary <- summary(1:10)
+aSummary
+names(aSummary)
+typeof(aSummary)
+aSummary["Median"]
+```

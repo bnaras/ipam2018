@@ -1,0 +1,42 @@
+---
+title: IPAM 2018 Tutorial
+author: Balasubramanian Narasimhan
+date: '2017-11-02'
+slug: tutorial
+bibliography: bibtex/ipam2018.bib
+link-citations: true
+categories: []
+tags: []
+---
+
+## Topics
+
+- [Set up R and RStudio](/post/tutorial/setup-R/)
+- [Set up Development Tools](/post/tutorial/setup-R-dev/)
+- [Quick Tour of RStudio](/post/tutorial/R-Studio/)
+
+## Quick Tour of R
+
+- [The R Language](/post/tutorial/R-Tour/)
+- [R Numerics](/post/tutorial/R-Numerics/)
+- [R Packages](/post/tutorial/R-Packages/)
+- [R Web Technologies](/post/tutorial/R-Web-Tech/)
+
+## Applications 
+
+- [Distributed Computation on Horizontally Partitioned Data](/post/tutorial/horizontal-partioning/)
+- [Homomorphic Computations](/post/tutorial/horizontal/)
+- [Vertically Partitioned Lasso](/post/tutorial/vertical-partitioned-lasso/)
+- [Vertically Partitioned Logistic Fit](/post/tutorial/vertical-partitioned-logistic-ridged/)
+
+## Computations on Encrypted Data
+
+- [Homomorphic Computation Introduction](/post/tutorial/homomorphing-intro/)
+- [Homomorphic MLE Estimation of a Poisson Parameter](/post/tutorial/homomorphing-mle/)
+- [Homomorphic Distributed Cox Fit](/post/tutorial/homomorphing-DHCox/)
+- [Privacy Preserving Linear Regression](/post/tutorial/homomorphing-regression) communicated by
+  Kee Siong Ng. 
+
+
+
+## References

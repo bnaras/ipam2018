@@ -1,0 +1,125 @@
+---
+title: Lasso on Vertically Partitioned Data
+author: Balasubramanian Narasimhan
+date: '2018-01-01'
+bibliography: ../bibtex/ipam2018.bib
+link-citations: true
+categories: []
+tags: []
+---
+
+
+
+<p>Implementing Lasso on vertically partitioned data provides some information on the issues with vertically partitioned data.</p>
+<p>Consider a dataset with response <span class="math inline">\(y\)</span> where the predictor matrix <span class="math inline">\(X\)</span> is vertically partitioned among three sites.</p>
+<p><span class="math display">\[
+X = [X_1, X_2, X_3]
+\]</span></p>
+<p>where the combined <span class="math inline">\(X\)</span> is <span class="math inline">\(n\times p\)</span>, each <span class="math inline">\(X_i\)</span> is <span class="math inline">\(n\times p_k\)</span>, for <span class="math inline">\(k= 1, 2, 3\)</span>, and <span class="math inline">\(\sum_{i=1}^3 p_k = p.\)</span></p>
+<p>We wish to fit a lasso model:</p>
+<p><span class="math display">\[ 
+\begin{array}{ll} 
+\underset{\beta}{\mbox{minimize}} &amp; ||y - X\beta||_2^2 + \lambda ||\beta||_1. 
+\end{array}
+\]</span></p>
+<p>For purposes of illustration, we generate a dataset.</p>
+<pre class="r"><code>set.seed(129)
+n &lt;- 100
+p &lt;- 5
+X &lt;- matrix(rnorm(n * p), n, p)
+X1 &lt;- X[, 1:2]
+X2 &lt;- X[, 3, drop = FALSE]
+X3 &lt;- X[, 4:5]
+beta_true &lt;- c(5, 0, 0, 2, 2)
+y &lt;- X %*% beta_true + rnorm(n)</code></pre>
+<section id="the-aggregated-fit" class="level2">
+<h2>The Aggregated Fit</h2>
+<p>If the data were not vertically partitioned, the fit would be straightforward for a specified <span class="math inline">\(\lambda = 2\)</span> say. We would just solve the optimization problem, the primal problem.</p>
+<pre class="r"><code>suppressWarnings(suppressMessages(library(CVXR)))
+
+beta &lt;- Variable(p)
+lambda &lt;- 2
+p_obj &lt;- sum_squares(y - X %*% beta) + lambda / 2 * p_norm(beta, 1)
+p_prob &lt;- Problem(Minimize(p_obj))
+p_result &lt;- solve(p_prob)</code></pre>
+<p>The resulting value of the primal objective is 109.5436324 and the fitted estimate is</p>
+<pre class="r"><code>(beta_primal &lt;- p_result$getValue(beta))</code></pre>
+<pre><code>##              [,1]
+## [1,]  4.937721027
+## [2,] -0.007471594
+## [3,]  0.094597544
+## [4,]  2.065937851
+## [5,]  2.130020709</code></pre>
+</section>
+<section id="the-lasso-dual" class="level2">
+<h2>The Lasso Dual</h2>
+<p>The dual problem for lasso for that <span class="math inline">\(\lambda\)</span> is</p>
+<p><span class="math display">\[ 
+\begin{array}{ll} 
+\underset{u}{\mbox{minimize}} &amp; ||y - u||_2^2
+\end{array}
+\mbox{ subject to }  ||X^Tu||_{\infty} \leq \lambda.
+\]</span></p>
+<p>In the above <span class="math inline">\(u\)</span> is an <span class="math inline">\(n\)</span>-vector of parameters and the constraint is</p>
+<p><span class="math display">\[
+X^Tu = \left[\begin{array}{l} 
+X_1^Tu\\
+X_2^Tu\\
+X_3^Tu
+\end{array}\right]
+\]</span></p>
+<p>where each <span class="math inline">\(X_k^Tu\)</span> is <span class="math inline">\(p_k\times n\)</span>. It follows that</p>
+<p><span class="math display">\[
+|X^Tu|_{\infty} = \max\{||X_1^Tu||_{\infty}, ||X_2^Tu||_{\infty}, ||X_3^Tu||_{\infty}\}
+\]</span></p>
+<p>Thus, if each site <span class="math inline">\(k\)</span> provides <span class="math inline">\(||X_k^Tu||_{\infty}\)</span> for a given <span class="math inline">\(u\)</span>, the constraint can be computed in a distributed fashion by a master performing the optimization.</p>
+<p>So the dual is solvable in a distributed fashion.</p>
+<p>Indeed, we can compute this to check.</p>
+<pre class="r"><code>u &lt;- Variable(n)
+d_obj &lt;- 0.5 * sum_squares(y - u)
+##d_constraint &lt;- list(p_norm(t(X) %*% u) &lt;= lambda)
+d_constraint &lt;- list(
+    max(p_norm(t(X1) %*% u, Inf),
+        p_norm(t(X2) %*% u, Inf),
+        p_norm(t(X3) %*% u, Inf)) &lt;= lambda
+)
+    
+d_prob &lt;- Problem(Minimize(d_obj), d_constraint)
+d_result &lt;- solve(d_prob)
+uVal &lt;- d_result$getValue(u)
+## Print a few values out of the 100
+head(uVal)</code></pre>
+<pre><code>##             [,1]
+## [1,] -1.05733012
+## [2,] -0.32031376
+## [3,]  0.57115415
+## [4,] -1.28355101
+## [5,] -1.97281480
+## [6,]  0.09022386</code></pre>
+<p>So far, so good.</p>
+</section>
+<section id="the-catch" class="level2">
+<h2>The Catch</h2>
+<p>Now that we have solved the dual problem, we need to recover the solution to the original primal problem. The correspondence between the primal solution <span class="math inline">\(\hat{\beta}\)</span> and dual solution <span class="math inline">\(u\)</span> is:</p>
+<p><span class="math display">\[
+X\hat{\beta} = y - u.
+\]</span></p>
+<p>The solution is, of course,</p>
+<p><span class="math display">\[
+\hat{\beta} = (X^TX)^{-1}X^T(y- u). 
+\]</span></p>
+<p>This is where we get killed because the <span class="math inline">\(X^TX\)</span> matrix involves cross-site terms like <span class="math inline">\(X_i^TX_j\)</span>:</p>
+<p>If we ignored that fact, we can check that we do get the right solution.</p>
+<pre class="r"><code>XtX &lt;- t(X) %*% X
+beta_dual&lt;- solve(XtX) %*% t(X) %*% (y - uVal)
+cbind(beta_dual, beta_primal)</code></pre>
+<pre><code>##               [,1]         [,2]
+## [1,]  4.919405e+00  4.937721027
+## [2,] -9.091532e-06 -0.007471594
+## [3,]  7.857126e-02  0.094597544
+## [4,]  2.047664e+00  2.065937851
+## [5,]  2.110122e+00  2.130020709</code></pre>
+</section>
+<section id="references" class="level2">
+<h2>References</h2>
+</section>

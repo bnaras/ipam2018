@@ -1,0 +1,147 @@
+---
+title: Data and Plots
+author: Balasubramanian Narasimhan
+date: '2018-01-01'
+bibliography: ../bibtex/ipam2018.bib
+link-citations: true
+categories: []
+tags: []
+---
+
+
+
+<section id="datasets" class="level2">
+<h2>Datasets</h2>
+<p>R comes with many datasets built in. These are part of the <code>datasets</code> package that is always loaded in R. For example, the <code>mtcars</code> dataset is a well-known dataset from Motor Trend magazine, documenting fuel consumption and vehicle characteristics for a number of vehicles. At the R console, typing <code>mtcars</code> will print the entire dataset.</p>
+<p>You can find help on datasets as usual using the <em>Help</em> tab in RStudio, clicking on the <code>Packages</code> link and navigating to the <code>datasets</code> package.</p>
+</section>
+<section id="import-data" class="level2">
+<h2>Import data</h2>
+<p>To do any real work, one has to load data from an external source. RStudio makes it easy to import data.</p>
+<p>Consider the data set that will be used in Lab 2, which is the 100m times for men and women. We will illustrate importing this data set, step by step.</p>
+<section id="step-1" class="level3">
+<h3>Step 1</h3>
+<p>From the <em>Import Dataset</em> menu, select <em>From CSV</em> to get a dialog as shown below and navigate to the folder containing the <code>100men</code> file.</p>
+<p><img src="figs/import-1.png" /></p>
+<p>Note that the import dialog has a number of options and on the right buttom it shows a preview of the code that will be used to import the data. If one cut and pasted the code into the R console, the result would be the same as what one would get via the dialogs.</p>
+<p>RStudio also take care to name the variable that will hold data according R conventions using <code>X100men</code>!</p>
+</section>
+<section id="step-2" class="level3">
+<h3>Step 2</h3>
+<p>When you open the file, RStudio shows a preview of the data in the viewer window.</p>
+<p><img src="figs/import-2.png" /></p>
+<p>This is of course not what we want since a cursory inspection shows that the data appears to contain three columns. So obviously, we have specified something wrong.</p>
+</section>
+<section id="step-3" class="level3">
+<h3>Step 3</h3>
+<p>In the <em>Import Options</em> panel, change the delimeter to <code>Tab</code> and while we are at it, change the name to <code>data.men</code>. Notice how the code preview reflects changes made to these options.</p>
+<p><img src="figs/import-3.png" /></p>
+</section>
+<section id="step-4" class="level3">
+<h3>Step 4</h3>
+<p>Press the <em>Import</em> button to get the data into R.</p>
+<p><img src="figs/import-4.png" /></p>
+<p>The result of the import is a variable called <code>data.men</code> that contains the data. Data formatted this way (either tab-delimeted, or comma-separated, or spread-sheet like) is so common that R has a abstraction for it: the <em>data frame</em>. You will have more opportunity to learn about data frames in the data parts of the course.</p>
+</section>
+<section id="avoiding-dialogs" class="level3">
+<h3>Avoiding dialogs</h3>
+<p>As one becomes more and more familiar with R, direct code becomes preferable to the slower interactive dialogs. This is one reason that RStudio gives you the code preview, to aid in your learning process. So, to get the same effect as the above dialog process did, one could have pasted the RStudio code into an R console to get the same result.</p>
+<pre class="r"><code>library(readr)
+data.men &lt;- read_delim(&quot;100men&quot;, &quot;\t&quot;, escape_double = FALSE, trim_ws = TRUE)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Athlete = col_character(),
+##   Time = col_double(),
+##   Date = col_character()
+## )</code></pre>
+<p>That would create the same data set.</p>
+<p>With more complex structures like data frames, the function <code>str</code> (for structure) is a good way to examine them.</p>
+<pre class="r"><code>str(data.men)</code></pre>
+<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    20 obs. of  3 variables:
+##  $ Athlete: chr  &quot;Usain Bolt (Jamaica)&quot; &quot;Usain Bolt (Jamaica)&quot; &quot;Usain Bolt (Jamaica)&quot; &quot;Asafa Powell (Jamaica)&quot; ...
+##  $ Time   : num  9.58 9.69 9.72 9.74 9.77 9.79 9.84 9.85 9.86 9.9 ...
+##  $ Date   : chr  &quot;Aug 16, 2009&quot; &quot;Aug 16, 2008&quot; &quot;May 31, 2008&quot; &quot;Sept 9, 2007&quot; ...
+##  - attr(*, &quot;spec&quot;)=List of 2
+##   ..$ cols   :List of 3
+##   .. ..$ Athlete: list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_character&quot; &quot;collector&quot;
+##   .. ..$ Time   : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_double&quot; &quot;collector&quot;
+##   .. ..$ Date   : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_character&quot; &quot;collector&quot;
+##   ..$ default: list()
+##   .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_guess&quot; &quot;collector&quot;
+##   ..- attr(*, &quot;class&quot;)= chr &quot;col_spec&quot;</code></pre>
+<p>We see that the data consists of 20 observations on 3 variables: <code>Athlete</code>, <code>Time</code>, <code>Date</code>. The second is numeric while the others are character.</p>
+</section>
+<section id="more-on-data-import" class="level3">
+<h3>More on data import</h3>
+<p>RStudio provides ways to import data directly from spreadsheets like Excel, etc. You can explore these options on your own.</p>
+<p>RStudio makes use of some packages to import data, notably the <code>readr</code> package. Strictly speaking these packages are not necessary for the job, but such packages include improvements that make them attractive. For example, a vanilla installation of R provides functions like <code>read.csv</code> and <code>read.delim</code> (analogous to <code>read_csv</code>, <code>read_delim</code>) that can also be used. However, by default, these functions perform some conversions, treating character variables as factors, for example. That can be troublesome (and computationally expensive) when dealing with large data sets. In this class, some instructors may use these vanilla R functions with various options to control the behavior.</p>
+</section>
+</section>
+<section id="graphs-and-plots" class="level2">
+<h2>Graphs and Plots</h2>
+<p>Graphing/plotting are among the great strengths of R. There are two main main approaches that are common in building graphs and plots.</p>
+<ol type="1">
+<li><p>Using basic functions provided by R itself via the <code>graphics</code> package which has a number of standard facilities. A quick way to familiarize yourself with base graphics is to type the command <code>demo(graphics)</code> at the R console to see its capabilities.</p></li>
+<li><p>Using a package like <code>ggplot2</code>, which requires a more nuanced understanding of a graphics object. You will have to install this package. <code>ggplot2</code> implements a grammar of graphics and so takes a bit more work to use, but is quite powerful.</p></li>
+</ol>
+<p>Both approaches allow for step-by-step building up of complex plots, and creating PDFs or images that can be included in other documents. Although <code>ggplot2</code> is becoming more popular, many packages may not use <code>ggplot2</code> for plotting. Furthermore, some special plots created by packages may use one of base graphics or <code>ggplot2</code> and so there isn’t a ready made equivalent in the other, although it can be constructed with extra work. So you will see both bae graphics and <code>ggplot2</code> used in this course.</p>
+<p>For ease of use, <code>ggplot2</code> provides a function called <code>qplot</code> that can emulate the base graphics <code>plot</code> function capabilities. This offers a quick way to begin using <code>ggplot2</code>, initially.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 38%" />
+<col style="width: 27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Description</th>
+<th>Base Graphics</th>
+<th><code>ggplot2</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Plot <code>y</code> versus <code>x</code> using points</td>
+<td><code>plot(x, y)</code></td>
+<td><code>qplot(x, y)</code></td>
+</tr>
+<tr class="even">
+<td>Plot <code>y</code> versus <code>x</code> using lines</td>
+<td><code>plot(x, y, type = &quot;l&quot;)</code></td>
+<td><code>qplot(x, |y, geom = &quot;line&quot;)</code></td>
+</tr>
+<tr class="odd">
+<td>Plot <code>y</code> versus <code>x</code> using both points and lines</td>
+<td><code>plot(x, y, type = |&quot;b&quot;)</code></td>
+<td><code>qplot(x, y, geom = c(&quot;point&quot;, &quot;line&quot;))</code></td>
+</tr>
+<tr class="even">
+<td>Boxplot of <code>x</code></td>
+<td><code>boxplot(x)</code></td>
+<td><code>qplot(x, geom = &quot;boxplot&quot;)</code></td>
+</tr>
+<tr class="odd">
+<td>Side-by-side boxplot of <code>x</code> and <code>y</code></td>
+<td><code>boxplot(x, y)</code></td>
+<td><code>qplot(x, y, geom = &quot;boxplot&quot;)</code></td>
+</tr>
+<tr class="even">
+<td>Histogram of <code>x</code></td>
+<td><code>hist(x)</code></td>
+<td><code>qplot(x, geom = &quot;histogram&quot;)</code></td>
+</tr>
+</tbody>
+</table>
+<section id="examples" class="level4">
+<h4>Examples</h4>
+<p>It is a good idea to try out the functions using the <code>example</code> function. At the R console type,</p>
+<pre class="r"><code>example(plot)</code></pre>
+<p>to see the <code>plot</code> examples.</p>
+<p>For <code>ggplot2</code>, you will have to load the library first and then use <code>example</code>.</p>
+<pre class="r"><code>library(ggplot2)
+example(qplot)</code></pre>
+</section>
+</section>

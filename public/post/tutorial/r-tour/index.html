@@ -1,0 +1,414 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head lang="en-us">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+	<meta name="description" content="Algorithmic Challenges in Protecting Privacy for Biomedical Data">
+	<meta name="generator" content="Hugo 0.30.2" />
+	
+	<title>Quick Intro to R &mdash; IPAM 2018 Workshop</title>
+	
+	<link rel="stylesheet" href="/css/alabaster.css" type="text/css" />
+	<link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+
+	
+
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+</head>
+
+	<body role="document">
+		<div class="document">
+			<div class="documentwrapper">
+				<div class="bodywrapper">
+					<div class="body" role="main">
+						
+	<h1>Quick Intro to R</h1>
+	
+	<section id="about-the-r-language-briefly" class="level2">
+<h2>About the R language, briefly</h2>
+<p>If you are used to traditional computing languages, you will find R different in many ways. The basic ideas behind R date back four decades and have a strong flavor of exploration: one can grapple with data, understand its structure, visualize it, summarize it etc. Therefore, a common way people use R is by typing a command and immediately see the results. (Of course, scripts can also be written and fed to R for batch execution.)</p>
+<p>The core of R itself is reasonably small, but over time, it has also become a vehicle for researchers to disseminate new tools and methodologies via packages. That is one reason for R’s popularity: there are thousands of packages (12000+ as of this writing) that extend R in many useful ways.</p>
+<p>The <a href="https://cloud.r-project.org">CRAN</a> website is something you will consult frequently for both the software, documentation and packages others have developed.</p>
+</section>
+<section id="some-detail-on-the-language" class="level2">
+<h2>Some detail on the language</h2>
+<p>Consider the following code snippet which creates a few variables.</p>
+<pre class="r"><code>x &lt;- 1
+y = 2
+z &lt;- x + y</code></pre>
+<p>Like other computer languages, R has ways of naming things in the language. Above, we used <code>x</code> as a name for the value 1 and <code>y</code> for the value 2. The names have to follow some rules. It is sufficient to be aware that they must start with an alphabetic character and can contain periods and underscores. Also, for obvious reasons, space is not permitted. (It is common to see names for variables such as <code>male.cholesterol</code> or <code>male_cholesterol</code>!)</p>
+<p><strong>Nomenclature</strong>: R users tend to use the word <em>objects</em> to refer to R variables, functions, datasets, etc.</p>
+<p>John Chambers:</p>
+<ul>
+<li>Everything that exists is an object.</li>
+<li>Everything that happens is a function call.</li>
+</ul>
+<p>So, in R, all action occurs via <em>functions</em>. Even something as simple as</p>
+<pre class="r"><code>1 + 2</code></pre>
+<pre><code>## [1] 3</code></pre>
+<p>is computed via functions.</p>
+<section id="should-i-use-or---for-assignment" class="level3">
+<h3>Should I use <code>=</code> or <code>&lt;-</code> for assignment?</h3>
+<p>In R, both <code>=</code> and <code>&lt;-</code> can be used for assigning a value to variables. However, using <code>&lt;-</code> (which I do) is the best thing to do.</p>
+</section>
+<section id="vectors-and-indexing" class="level3">
+<h3>Vectors and Indexing</h3>
+<ol type="1">
+<li><p>R has no concept of a scalar. A scalar is simply a vector of length 1.</p></li>
+<li><p>R can handle both numeric and non-numeric (non-numeric) data.</p></li>
+</ol>
+<pre class="r"><code>x &lt;- c(1.0, 2)
+x</code></pre>
+<pre><code>## [1] 1 2</code></pre>
+<pre class="r"><code>typeof(x)</code></pre>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<pre class="r"><code>y &lt;- c(&quot;abc&quot;, &quot;d&quot;, &quot;e&quot;, &#39;fgh&#39;)
+y</code></pre>
+<pre><code>## [1] &quot;abc&quot; &quot;d&quot;   &quot;e&quot;   &quot;fgh&quot;</code></pre>
+<pre class="r"><code>typeof(y)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>z &lt;- 1:5
+z</code></pre>
+<pre><code>## [1] 1 2 3 4 5</code></pre>
+<pre class="r"><code>typeof(z)</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<pre class="r"><code>w &lt;- c(TRUE, FALSE, TRUE, TRUE)
+w</code></pre>
+<pre><code>## [1]  TRUE FALSE  TRUE  TRUE</code></pre>
+<pre class="r"><code>typeof(w)</code></pre>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<p>The <code>c</code> stands for the <em>combine</em> function and it creates a vector of two numbers for <code>x</code> and a vector of four strings for <code>y</code>. Note how both single and double quotes may be used (useful when we have quotes within strings). For <code>z</code> we use a shortcut <code>1:5</code> for creating a sequence of integers from 1 to 5. And finally, <code>w</code> is a logical vector; R recognizes the symbols <code>TRUE</code> and <code>FALSE</code> as special symbols; you cannot have a variable named <code>TRUE</code> for example! (The <code>typeof</code> function is useful to understand basic underlying types.)</p>
+<ol start="3" type="1">
+<li><em>R uses 1-based indexing!</em></li>
+</ol>
+<p>Often, one needs to access a part, or a subset or a slice of a vector. This is done by specifying indices indexing construct</p>
+<pre class="r"><code>## The first element; indexing begins from 1
+x[1]</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>## The third element of y
+y[3]</code></pre>
+<pre><code>## [1] &quot;e&quot;</code></pre>
+<pre class="r"><code>## The second to fourth element of z
+z[2:4]</code></pre>
+<pre><code>## [1] 2 3 4</code></pre>
+<pre class="r"><code>## The first and last element of y
+y[c(1, length(y))]</code></pre>
+<pre><code>## [1] &quot;abc&quot; &quot;fgh&quot;</code></pre>
+<p>Note the use of the function <code>length</code> that returns the length of <code>y</code> (4 for us).</p>
+<ol start="4" type="1">
+<li>Nothing stops one from combining types.</li>
+</ol>
+<pre class="r"><code>## Combine x and y into one
+c(x, y)</code></pre>
+<pre><code>## [1] &quot;1&quot;   &quot;2&quot;   &quot;abc&quot; &quot;d&quot;   &quot;e&quot;   &quot;fgh&quot;</code></pre>
+<p>Note, however, that the last combine operation silently coerces everything to strings. This is because vectors contain <em>homogeneous</em> elements. That seems limiting, because sometimes you may have both types of data and you don’t want to be converting things back and forth.</p>
+<ol start="5" type="1">
+<li>Lists are versatile data structures that can grow or shrink and contain heterogeneous data. They are constructed using the <code>list</code> function:</li>
+</ol>
+<pre class="r"><code>aList &lt;- list(1, 2, list(1, 2, &quot;abc&quot;))
+aList</code></pre>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 2
+## 
+## [[3]]
+## [[3]][[1]]
+## [1] 1
+## 
+## [[3]][[2]]
+## [1] 2
+## 
+## [[3]][[3]]
+## [1] &quot;abc&quot;</code></pre>
+<p>Note how a list prints differently. Individual elements of the list, unlike the vectors above, are accessed using the double bracket notation, suggested by the printing. Note also that there is no coercion of types.</p>
+<pre class="r"><code>## The second element
+aList[[2]]</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>## The third element, which is itself a list!
+aList[[3]]</code></pre>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 2
+## 
+## [[3]]
+## [1] &quot;abc&quot;</code></pre>
+<pre class="r"><code>## The second element of the third element
+aList[[3]][[2]]</code></pre>
+<pre><code>## [1] 2</code></pre>
+<p>With lists, the single bracket indexing behaves differently from double bracket indexing.</p>
+<pre class="r"><code>aList[[2]]</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>aList[2]</code></pre>
+<pre><code>## [[1]]
+## [1] 2</code></pre>
+<p>The difference is clear from the way each is printed: the former is just the second element of the list whereas the latter is another list whose second element is from the original list.</p>
+<p>The rule is simple: single bracket indexing returns the same type of object.</p>
+<pre class="r"><code>typeof(aList[[2]])</code></pre>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<pre class="r"><code>typeof(aList[2])</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<ol start="6" type="1">
+<li>Negative indexing is a convenient way to drop some elements from a vector.</li>
+</ol>
+<pre class="r"><code>## Drop the first element of x
+x[-1]</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>## Drop the last element of y
+y[-length(y)]</code></pre>
+<pre><code>## [1] &quot;abc&quot; &quot;d&quot;   &quot;e&quot;</code></pre>
+<pre class="r"><code>## Drop the first and last element of aList
+aList[c(-1, -length(aList))]</code></pre>
+<pre><code>## [[1]]
+## [1] 2</code></pre>
+<p>Mixing of negative and non-negative indices is not permitted.</p>
+<pre class="r"><code>## This results in an error
+y[c(-1, 3:4)]</code></pre>
+<pre><code>## Error in y[c(-1, 3:4)]: only 0&#39;s may be mixed with negative subscripts</code></pre>
+<p>R also allows logical indexing:</p>
+<pre class="r"><code>## Select y elements where w is TRUE
+y[w]</code></pre>
+<pre><code>## [1] &quot;abc&quot; &quot;e&quot;   &quot;fgh&quot;</code></pre>
+<p>will select the first, third and fourth elements and drop the rest. Selecting elements based on conditions is very useful and we will see further examples.</p>
+<ol start="8" type="1">
+<li>Missing and <code>NULL</code> values</li>
+</ol>
+<p>R has a notion of a missing value that can be used to indicate data is missing for some cases, an all too real phenomenon. It is denoted by <code>NA</code>.</p>
+<pre class="r"><code>miss1 &lt;- c(1.0, NA, 2.0)
+2 * miss1</code></pre>
+<pre><code>## [1]  2 NA  4</code></pre>
+<p>Notice how the last operation did the appropriate thing with the missing value. It is extremely convenient to be able to use missing values as you would any other object in R. But numerical computations will have to provide hints on how to handle the missing values. For example, the <code>mean</code> function computes the average of a set of numbers.</p>
+<pre class="r"><code>## No hint to process missing values
+mean(miss1)</code></pre>
+<pre><code>## [1] NA</code></pre>
+<pre class="r"><code>## Remove missing values before processing
+mean(miss1, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 1.5</code></pre>
+<p>Another value <code>NULL</code> is used to indicate <em>nothing is present</em>. Note that it is semantically different from a missing value.</p>
+<pre class="r"><code>NULL</code></pre>
+<pre><code>## NULL</code></pre>
+<pre class="r"><code>## Combine nothing
+c()</code></pre>
+<pre><code>## NULL</code></pre>
+<p>One can check for missing-ness or nullity using the <code>is</code> family of functions.</p>
+<pre class="r"><code>is.null(c())</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>is.null(NA)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>## This should produce a warning
+is.na(c())</code></pre>
+<pre><code>## Warning in is.na(c()): is.na() applied to non-(list or vector) of type
+## &#39;NULL&#39;</code></pre>
+<pre><code>## logical(0)</code></pre>
+<pre class="r"><code>is.na(NA)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>There are many others: <code>is.numeric</code>, <code>is.list</code>, <code>is.vector</code>, etc.</p>
+<ol start="9" type="1">
+<li>Arithmetic and logical operations</li>
+</ol>
+<p>The standard operations are all available: <code>+</code>, <code>-</code>, <code>*</code> (multiplication), <code>/</code> division. In R, when you perform arithmetic on vectors, the operations happen on all elements.</p>
+<pre class="r"><code>## Add two vectors
+1:3 + 2:4</code></pre>
+<pre><code>## [1] 3 5 7</code></pre>
+<pre class="r"><code>## Multiply a vector by 2
+2 * 1:3</code></pre>
+<pre><code>## [1] 2 4 6</code></pre>
+<pre class="r"><code>## Better to have parenthesis
+2 * (1:3)</code></pre>
+<pre><code>## [1] 2 4 6</code></pre>
+<pre class="r"><code>## Divide
+c(2, 4, 6) / c(2, 4, 6)</code></pre>
+<pre><code>## [1] 1 1 1</code></pre>
+<pre class="r"><code>## Halve
+c(2, 4, 6) / 2</code></pre>
+<pre><code>## [1] 1 2 3</code></pre>
+<pre class="r"><code>## R recycles shorter vector to match length
+c(2, 4, 6, 8) / c(1, 2)</code></pre>
+<pre><code>## [1] 2 2 6 4</code></pre>
+<pre class="r"><code>## Above is same as
+c(2, 4, 6, 8) / c(1, 2, 1, 2)</code></pre>
+<pre><code>## [1] 2 2 6 4</code></pre>
+<pre class="r"><code>## Warning, but not error below
+c(2, 4, 6) / c(1, 2)</code></pre>
+<pre><code>## Warning in c(2, 4, 6)/c(1, 2): longer object length is not a multiple of
+## shorter object length</code></pre>
+<pre><code>## [1] 2 2 6</code></pre>
+<p>The last operation shows how R tries to make two vectors conform in length and provides a warning. <em>Good code avoids relying on such behaviors as they can cause unpredictable errors.</em></p>
+<p>The usual comparison operators are available: <code>==</code> for equality, <code>!=</code> for not equal to, <code>&gt;=</code> for greater than or equal to, etc.</p>
+<pre class="r"><code>xx &lt;- 1:3
+xx == xx</code></pre>
+<pre><code>## [1] TRUE TRUE TRUE</code></pre>
+<pre class="r"><code>## 1 is expanded to match length of xx
+xx &gt; 1</code></pre>
+<pre><code>## [1] FALSE  TRUE  TRUE</code></pre>
+<ol start="10" type="1">
+<li>Comparison operators can be used to select subsets of vectors. Some examples with the understanding that <code>a %% 2</code> returns the reminder upon division of a by 2.</li>
+</ol>
+<pre class="r"><code>xx &lt;- 1:10
+## Pick all numbers &gt;= 5
+xx[ xx &gt;= 5]</code></pre>
+<pre><code>## [1]  5  6  7  8  9 10</code></pre>
+<pre class="r"><code>## Pick even numbers from 1 to 10
+xx[ xx %% 2 == 0]</code></pre>
+<pre><code>## [1]  2  4  6  8 10</code></pre>
+<pre class="r"><code>## Pick odd numbers from 1 to 10
+xx[ xx %% 2 != 0]</code></pre>
+<pre><code>## [1] 1 3 5 7 9</code></pre>
+<ol start="11" type="1">
+<li>Coercion</li>
+</ol>
+<p>We saw above that some functions, can silently coerce the results to something meaningful. In many case, such coercions can be useful.</p>
+<p>How many even numbers between 1 and 10?</p>
+<pre class="r"><code>xx &lt;- 1:10
+xx %% 2 == 0</code></pre>
+<pre><code>##  [1] FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE</code></pre>
+<pre class="r"><code>sum(xx %% 2 == 0)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<p>Here <code>xx %% 2 == 0</code> is a list of 10 logical values with <code>TRUE</code> wherever we have an even number. The function <code>sum</code> converts <code>TRUE</code> values to 1 and <code>FALSE</code> values to 0 and results to provide the answer.</p>
+<p>R usually coerces the results where possible to the type that can accomodate the result. If it cannot, it signals an error.</p>
+<p>There are many explicit coercion functions such as <code>as.numeric</code>, <code>as.integer</code>, <code>as.list</code>.</p>
+<pre class="r"><code>xx &lt;- 1:5
+as.integer(xx %% 2 == 0)</code></pre>
+<pre><code>## [1] 0 1 0 1 0</code></pre>
+<pre class="r"><code>as.character(xx)</code></pre>
+<pre><code>## [1] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; &quot;5&quot;</code></pre>
+<pre class="r"><code>as.list(xx)</code></pre>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 2
+## 
+## [[3]]
+## [1] 3
+## 
+## [[4]]
+## [1] 4
+## 
+## [[5]]
+## [1] 5</code></pre>
+<p>Coercion functions are useful when processing external data for computational work.</p>
+<ol start="12" type="1">
+<li>Naming</li>
+</ol>
+<p>R allows one to add <em>names</em> to objects.</p>
+<pre class="r"><code>named_x &lt;- c(a = 1.02, b = 2, 3)
+named_x</code></pre>
+<pre><code>##    a    b      
+## 1.02 2.00 3.00</code></pre>
+<p>Above, only two of the three elements were named. This makes the third element have an empty name. The function <code>names</code> allows one to retrieve the names of an object.</p>
+<pre class="r"><code>names(named_x)</code></pre>
+<pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;&quot;</code></pre>
+<p>The naming facility allows one to access elements of vectors using names rather than indices.</p>
+<pre class="r"><code>## Equivalent to named_x[2]
+named_x[&quot;b&quot;]</code></pre>
+<pre><code>## b 
+## 2</code></pre>
+<pre class="r"><code>## Equivalent to named_x[1:2]
+named_x[c(&quot;a&quot;, &quot;b&quot;)]</code></pre>
+<pre><code>##    a    b 
+## 1.02 2.00</code></pre>
+<p><em>Naming is an extremely useful tool in writing readable code</em>. One might worry about a performance penalty but it is negligible in most cases and the gains in readability far outweigh any inefficiencies.</p>
+<p>Naming works for lists too.</p>
+<pre class="r"><code>named_list &lt;- list(x = x, y = y, zed = z)
+named_list[c(&quot;x&quot;, &quot;zed&quot;)]</code></pre>
+<pre><code>## $x
+## [1] 1 2
+## 
+## $zed
+## [1] 1 2 3 4 5</code></pre>
+<p>With lists, the individual <em>elements</em> can also be accessed using the <em>dollar</em> (<code>$</code>) notation.</p>
+<pre class="r"><code>named_list$zed</code></pre>
+<pre><code>## [1] 1 2 3 4 5</code></pre>
+<p>Much of R code and functions exploit naming; many functions return more than one value and they are often stuffed into a named vector or list.</p>
+<pre class="r"><code>aSummary &lt;- summary(1:10)
+aSummary</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    1.00    3.25    5.50    5.50    7.75   10.00</code></pre>
+<pre class="r"><code>names(aSummary)</code></pre>
+<pre><code>## [1] &quot;Min.&quot;    &quot;1st Qu.&quot; &quot;Median&quot;  &quot;Mean&quot;    &quot;3rd Qu.&quot; &quot;Max.&quot;</code></pre>
+<pre class="r"><code>typeof(aSummary)</code></pre>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<pre class="r"><code>aSummary[&quot;Median&quot;]</code></pre>
+<pre><code>## Median 
+##    5.5</code></pre>
+</section>
+</section>
+
+
+
+						
+					</div>
+				</div>
+			</div>
+			
+			<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+	<div class="sphinxsidebarwrapper">
+		<p class="logo">
+			<a href="/">
+				<img class="logo" src="/favicon.ico" alt="Logo"/>
+				<h1 class="logo logo-name"></h1>
+			</a>
+		</p>
+		
+		<p class="blurb">Algorithmic Challenges in Protecting Privacy for Biomedical Data</p>
+
+		
+
+	<p>
+		<iframe src="https://ghbtns.com/github-btn.html?user=bnaras&repo=ipam2018&type=watch&count=true&size=large"
+		allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+	</p>
+
+	
+
+	
+		
+
+		
+
+<h3>Navigation</h3>
+<ul>
+	
+	<li class="toctree-l1">
+		<a class="reference internal" href="index.html">Home</a>
+	</li>
+	
+	<li class="toctree-l1">
+		<a class="reference internal" href="https://github.com/bnaras/ipam2018">Github</a>
+	</li>
+	
+	<li class="toctree-l1">
+		<a class="reference internal" href="post/tutorial/">Tutorial</a>
+	</li>
+	
+</ul>
+
+
+		<h3>Related Topics</h3>
+<ul>
+  <li><a href="/">Documentation overview</a><ul>
+  <li>Previous: <a href="/post/tutorial/r-studio/" title="RStudio IDE">RStudio IDE</a></li>
+  <li>Next: <a href="/post/tutorial/homomorphing-mle/" title="Poisson MLE via Homomorphic Computation">Poisson MLE via Homomorphic Computation</a></li>
+</ul>
+
+	</div>
+</div>
+<div class="clearer"></div>
+</div>
+			<script type="text/javascript" src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+			
+
+			
+
+			
+		</div>
+	</body>
+</html>

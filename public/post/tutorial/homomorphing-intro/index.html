@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head lang="en-us">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+	<meta name="description" content="Algorithmic Challenges in Protecting Privacy for Biomedical Data">
+	<meta name="generator" content="Hugo 0.30.2" />
+	
+	<title>Homomorphic Computations &mdash; IPAM 2018 Workshop</title>
+	
+	<link rel="stylesheet" href="/css/alabaster.css" type="text/css" />
+	<link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+
+	
+
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+</head>
+
+	<body role="document">
+		<div class="document">
+			<div class="documentwrapper">
+				<div class="bodywrapper">
+					<div class="body" role="main">
+						
+	<h1>Homomorphic Computations</h1>
+	
+	<p>A homomorphism is a structure-preserving map from one algebraic structure to another; see <a href="https://en.wikipedia.org/wiki/Homomorphism">Wikipedia</a>. Privacy experts are interested in homomorphic computation because it offers a way to perform computations on encrypted data, either in a distributed setting or in the cloud, thereby handling many of the headaches associated with storing/moving/anonymizing data. Homomorphic computation also finds application in secure voting, verifyable computing etc.</p>
+<p>A homomorphic encryption scheme is one that provides such a homomorphism along with the infrastructure to carry out the computations. The schemes provide algorithms for generating public and private keys. The public key is distributed to anyone and the private key is only needed by the one who does the decryption. There are several such schemes documented in <a href="https://en.wikipedia.org/wiki/Homomorphic_encryption">Wikipedia</a>. The main thing to know is that there are two flavours: partial and full. Partial schemes preserve structure for certain specified operations, say addition only, whereas full schemes do over all the standard arithmetic operations. The operations mentioned here are all in the context of the algebraic structure underneath, which for our purposes will be modular arithmetic where the modulus is some large number.</p>
+<p>The current package <code>homomorpheR</code> implements the Paillier system which is a partially homomorphic; it provides an additive homomorphism. The implementation here borrows much from the Javascript implementation for a proof-of-concept system. Therefore, it is not yet ready for serious work. So there, you’ve been warned.</p>
+<p>If you are interested in the mathematical details of the Paillier crytosystem, the main reference is <span class="citation" data-cites="Paillier99">(Paillier <a href="#ref-Paillier99">1999</a>)</span>. Volkhausen <span class="citation" data-cites="volkhausen2006">(<a href="#ref-volkhausen2006">2006</a>)</span> provides a detailed mathematical introduction; Michael O’Keefe <span class="citation" data-cites="okeefe2008">(<a href="#ref-okeefe2008">2008</a>)</span> is a gentler one. A simple application of the Paillier system for secure vote tallying is in <span class="citation" data-cites="choinyaambu2009">(Choinyammbu <a href="#ref-choinyaambu2009">2009</a>)</span>.</p>
+<p>A bit of notation helps. Let <span class="math inline">\(x\)</span> be any message; for us, it is just a large integer. Denote <span class="math inline">\(E(x)\)</span> as the encrypted message and <span class="math inline">\(D(x)\)</span> as the decryption of <span class="math inline">\(x\)</span> in some scheme. If the scheme is homomorphic over addition, then we have <span class="math display">\[ E(x) + E(y) = E(x + y) \]</span></p>
+<p>This means that calculating <span class="math inline">\(x+y\)</span> can be done by decrypting the sum of the encrypted values of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>. Thus, entities can merely exchange encrypted values throughout. This is pictorially shown in the figure (source: <a href="http://jeremykun.com/tag/homomorphic-encryption" class="uri">http://jeremykun.com/tag/homomorphic-encryption</a> ) below:</p>
+<div style="text-align:center" data-markdown="1">
+<figure>
+<img src="/post/tutorial/figs/homo.jpeg" alt="Homomorphic Computation" /><figcaption>Homomorphic Computation</figcaption>
+</figure>
+</div>
+<section id="facilities" class="level2">
+<h2>Facilities</h2>
+<p>As a first step, a public and private key pair needs to be generated. In generating bits for cryptosystems, a secure random number source is needed; <code>homomorpheR</code> makes use of the R package <code>sodium</code> by Jeroen Ooms (based on Daniel J. Bernstein’s generators) in addition to <code>gmp</code> for arbitrary precision arithmetic.</p>
+<pre class="r"><code>library(homomorpheR)
+keyPair &lt;- PaillierKeyPair$new(modulusBits = 1024)</code></pre>
+<p>Examine the <code>keyPair</code> object:</p>
+<pre class="r"><code>keyPair</code></pre>
+<pre><code>## &lt;PaillierKeyPair&gt;
+##   Public:
+##     clone: function (deep = FALSE) 
+##     getPrivateKey: function () 
+##     initialize: function (modulusBits) 
+##     pubkey: PaillierPublicKey, R6
+##   Private:
+##     privkey: PaillierPrivateKey, R6</code></pre>
+<p>The <code>pubkey</code> field can be distributed all interested parties but the private key, obtainable by <code>getPrivateKey()</code> should be kept secret for decryption.</p>
+<p>The main functions are the <code>encrypt</code> function for the public key, and the <code>decrypt</code> function for the private key.</p>
+</section>
+<section id="some-tests" class="level2">
+<h2>Some tests</h2>
+<p>We can now perform some simple tests. But before that a simple function that encrypts and decrypts.</p>
+<pre class="r"><code>encryptAndDecrypt &lt;- function(x) keyPair$getPrivateKey()$decrypt(keyPair$pubkey$encrypt(x))</code></pre>
+<p>Now we can encrypt and decrypt some numbers.</p>
+<pre class="r"><code>a &lt;- gmp::as.bigz(1273849)
+identical(a + 10, encryptAndDecrypt(a + 10))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>Now with a large set of numbers. The function <code>random.bigz</code> returns large random numbers.</p>
+<pre class="r"><code>m &lt;- lapply(1:100, function(x) random.bigz(nBits = 512))
+md &lt;- lapply(m, encryptAndDecrypt)
+identical(m, md)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+</section>
+<section id="references" class="level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references">
+<div id="ref-choinyaambu2009">
+<p>Choinyammbu, Sansar. 2009. “Homomorphic Tallying with Paillier Cryptosystem.” <a href="http://security.hsr.ch/msevote/seminar-papers/HS09_Homomorphic_Tallying_with_Paillier.pdf" class="uri">http://security.hsr.ch/msevote/seminar-papers/HS09_Homomorphic_Tallying_with_Paillier.pdf</a>.</p>
+</div>
+<div id="ref-okeefe2008">
+<p>O’Keefe, Michael. 2008. “The Paillier Cryptosystem: A Look into the Cryptosystem and Its Potential Application.” <a href="http://www.tcnj.edu/~hagedorn/papers/CapstonePapers/OKeeffe/CapstoneOKeeffeCryptography.pdf" class="uri">http://www.tcnj.edu/~hagedorn/papers/CapstonePapers/OKeeffe/CapstoneOKeeffeCryptography.pdf</a>.</p>
+</div>
+<div id="ref-Paillier99">
+<p>Paillier, Pascal. 1999. “Public-Key Cryptosystems Based on Composite Degree Residuosity Classes.” In <em>Advances in Cryptology - EUROCRYPT ’99, International Conference on the Theory and Application of Cryptographic Techniques, Prague, Czech Republic, May 2-6, 1999, Proceeding</em>, 223–38. <a href="https://doi.org/10.1007/3-540-48910-X_16" class="uri">https://doi.org/10.1007/3-540-48910-X_16</a>.</p>
+</div>
+<div id="ref-volkhausen2006">
+<p>Volkhausen, Tobias. 2006. “Paillier Cryptosystem: A Mathematical Introduction.” <a href="http://www2.cs.uni-paderborn.de/cs/ag-bloemer/lehre/proseminar_WS2005/material/Volkhausen_DasPaillierKryptosystem.pdf?PHPSESSID=fd8a3d9a0d9c9ce4e5c00f5abcbd2a5a" class="uri">http://www2.cs.uni-paderborn.de/cs/ag-bloemer/lehre/proseminar_WS2005/material/Volkhausen_DasPaillierKryptosystem.pdf?PHPSESSID=fd8a3d9a0d9c9ce4e5c00f5abcbd2a5a</a>.</p>
+</div>
+</div>
+</section>
+
+
+
+						
+					</div>
+				</div>
+			</div>
+			
+			<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+	<div class="sphinxsidebarwrapper">
+		<p class="logo">
+			<a href="/">
+				<img class="logo" src="/favicon.ico" alt="Logo"/>
+				<h1 class="logo logo-name"></h1>
+			</a>
+		</p>
+		
+		<p class="blurb">Algorithmic Challenges in Protecting Privacy for Biomedical Data</p>
+
+		
+
+	<p>
+		<iframe src="https://ghbtns.com/github-btn.html?user=bnaras&repo=ipam2018&type=watch&count=true&size=large"
+		allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+	</p>
+
+	
+
+	
+		
+
+		
+
+<h3>Navigation</h3>
+<ul>
+	
+	<li class="toctree-l1">
+		<a class="reference internal" href="index.html">Home</a>
+	</li>
+	
+	<li class="toctree-l1">
+		<a class="reference internal" href="https://github.com/bnaras/ipam2018">Github</a>
+	</li>
+	
+	<li class="toctree-l1">
+		<a class="reference internal" href="post/tutorial/">Tutorial</a>
+	</li>
+	
+</ul>
+
+
+		<h3>Related Topics</h3>
+<ul>
+  <li><a href="/">Documentation overview</a><ul>
+  <li>Previous: <a href="/post/tutorial/homomorphing-regression/" title="Homomorphic Linear Regression">Homomorphic Linear Regression</a></li>
+  <li>Next: <a href="/post/" title="Distributed and Privacy-Preserving Computations in R">Distributed and Privacy-Preserving Computations in R</a></li>
+</ul>
+
+	</div>
+</div>
+<div class="clearer"></div>
+</div>
+			<script type="text/javascript" src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+			
+
+			
+
+			
+		</div>
+	</body>
+</html>

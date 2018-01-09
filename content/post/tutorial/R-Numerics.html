@@ -1,0 +1,50 @@
+---
+title: Linear Algebra and Numerical Methods
+author: Balasubramanian Narasimhan
+date: '2018-01-01'
+bibliography: ../bibtex/ipam2018.bib
+link-citations: true
+categories: []
+tags: []
+---
+
+
+
+<section id="matrices" class="level3">
+<h3>Matrices</h3>
+<p>The function <code>matrix</code> can be used for creating matrices which are two-dimensional arrays.</p>
+<pre class="r"><code>## Create a 3 by 2 matrix.
+m &lt;- matrix(1:6, nrow = 3)
+m</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    4
+## [2,]    2    5
+## [3,]    3    6</code></pre>
+<p>Another way is to use existing vectors to <em>bind</em> into a matrix.</p>
+<pre class="r"><code>xx &lt;- 1:3
+yy &lt;- 4:6
+## Bind by columns
+(m2 &lt;- cbind(xx, yy))</code></pre>
+<pre><code>##      xx yy
+## [1,]  1  4
+## [2,]  2  5
+## [3,]  3  6</code></pre>
+<pre class="r"><code>## Bind by rows
+(m3 &lt;- rbind(xx, yy))</code></pre>
+<pre><code>##    [,1] [,2] [,3]
+## xx    1    2    3
+## yy    4    5    6</code></pre>
+<p>The matrix <code>m2</code> has the same content as <code>m</code> above, but the columns have names <code>xx</code> and <code>yy</code> which can be used in subsetting/indexing.</p>
+<pre class="r"><code>## Access element in row 1, column 2
+m[1, 2]</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>## Access second column
+m[ , 2]</code></pre>
+<pre><code>## [1] 4 5 6</code></pre>
+<pre class="r"><code>## Do the same with matrix m2
+m2[, &quot;yy&quot;]</code></pre>
+<pre><code>## [1] 4 5 6</code></pre>
+<pre class="r"><code>## Access the third row of m
+m[3, ]</code></pre>
+<pre><code>## [1] 3 6</code></pre>
+</section>

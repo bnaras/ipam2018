@@ -1,0 +1,62 @@
+---
+title: RStudio IDE
+author: Balasubramanian Narasimhan
+date: '2018-01-01'
+bibliography: ../bibtex/ipam2018.bib
+link-citations: true
+categories: []
+tags: []
+---
+
+
+
+<p>We can only cover some important aspects of RStudio here. There are a number of resources online, including Youtube videos that you can consult.</p>
+<p>When you start RStudio, you will get a view similar to what is shown below with perhaps slight differences.</p>
+<p><img src="/post/tutorial/figs/rstudio.png" /></p>
+<p>One can type commands directly into the console window and see results. For example, go ahead and type <code>1+1</code> to use R as a calculator and see the result. However, one often wants to write a sequence of commands, execute them and possibly save the commands to run them again another time. That’s what the editor window is for. You can type a series of commands into the editor window and RStudio will offer to save them when you quit, and bring them back when you restart RStudio.</p>
+<p>If you type</p>
+<pre class="r"><code>x = 1 + 1
+y = 2 * x
+z &lt;- (x + y)</code></pre>
+<p>into the editor window, you can press the <code>Run</code> arrow shown and execute each line in the R console, one by one. The figure below shows this and as new variables are created, the workspace panel displays them.</p>
+<p><img src="/post/tutorial/figs/rstudio2.png" /></p>
+<section id="help" class="level3">
+<h3>Help</h3>
+<p>A lot of help is available in RStudio in the help tab that you should feel free to investigate. We merely point out a few.</p>
+<p><img src="/post/tutorial/figs/rstudio3.png" /></p>
+<p>When anyone installs R, there is a set of recommended packages that is always installed. So your <em>installed packages</em> will reflect that. As we proceed, you will have to install many packages and that list will, of course, grow.</p>
+</section>
+<section id="installing-packages" class="level3">
+<h3>Installing Packages</h3>
+<p>There are world-wide R package repositories or Comprehensive R Archive Network (CRAN) sites that allow packages to be downloaded and installed. You almost never have to directly work with them since RStudio makes it easy to install the packages as shown in the figure below, where we have clicked on the <strong>Packages</strong> tab and clicked on the <em>Install</em> button. Note how as you type the name of a package, you get auto-completion. (In fact, RStudio provides auto-completion even as you type R commands, showing you various options you can use for the commands!)</p>
+<p><img src="/post/tutorial/figs/rstudio4.png" /></p>
+<section id="activity" class="level4">
+<h4>Activity</h4>
+<p>At this point, you should go ahead and install the <code>dplyr</code> package. Press all the buttons necessary to make the install happen. After you have done the installation, go back to the <strong>Help</strong> tab where you can click on the <em>Installed Packages</em> link shown in the figure below.</p>
+<p><img src="/post/tutorial/figs/rstudio3.png" /></p>
+</section>
+<section id="section" class="level4">
+<h4></h4>
+<p>Navigate to the <code>dplyr</code> link and click on it so that you get to the help on the <code>dplyr</code> package. Two kinds of help are displayed: <em>Documentation</em> and <em>Help Pages</em>.</p>
+<p><img src="/post/tutorial/figs/rstudio5.png" /></p>
+</section>
+<section id="section-1" class="level4">
+<h4></h4>
+<p>The <em>Help Pages</em> document facilities that the package <code>dplyr</code> in detail. The <em>Documentation</em> is often more useful, because they can contain user guides and <em>vignettes</em> that are very useful for people learning about the package. So click on the <em>User guides…</em></p>
+<p><img src="/post/tutorial/figs/rstudio6.png" /></p>
+</section>
+<section id="section-2" class="level4">
+<h4></h4>
+<p>Click on the <em>Introduction to dplyr</em> vignette to see the vignette.</p>
+<p><img src="/post/tutorial/figs/rstudio7.png" /></p>
+</section>
+<section id="section-3" class="level4">
+<h4></h4>
+<p><em>Vignettes, when present, are indispenable in learning about a package.</em> Not all packages provide vignettes, however!</p>
+</section>
+</section>
+<section id="workspace" class="level3">
+<h3>Workspace</h3>
+<p>As you use RStudio more, you will find yourself creating variables (like <code>x</code>, <code>y</code>, <code>z</code> above, except far more valuable) and it is desirable to save them. When you quit RStudio, you will be given a choice of saving your workspace. It is worth doing so if you have important things created.</p>
+<p>RStudio also a notion of projects and so you can keep project workspaces separate. Each such project can be designated a working folder so that <code>x</code> from one workspace does not clobber <code>x</code> from another. You can explore these options via the <em>File</em> menu.</p>
+</section>

@@ -1,0 +1,114 @@
+---
+title: RStudio IDE
+author: Balasubramanian Narasimhan
+date: '2018-01-01'
+bibliography: ../bibtex/ipam2018.bib
+link-citations: true
+categories: []
+tags: []
+---
+
+We can only cover some important aspects of RStudio here. There are
+a number of resources online, including Youtube videos that you can
+consult.
+
+When you start RStudio, you will get a view similar to what is shown
+below with perhaps slight differences.
+
+![](/post/tutorial/figs/rstudio.png)
+
+One can type commands directly into the console window and see
+results. For example, go ahead and type `1+1` to use R as a calculator
+and see the result. However, one often wants to write a sequence of
+commands, execute them and possibly save the commands to run them
+again another time. That's what the editor window is for. You can type
+a series of commands into the editor window and RStudio will offer to
+save them when you quit, and bring them back when you restart RStudio.
+
+If you type
+```{r}
+x = 1 + 1
+y = 2 * x
+z <- (x + y)
+```
+into the editor window, you can press the `Run` arrow shown and
+execute each line in the R console, one by one. The figure below shows
+this and as new variables are created, the workspace panel displays
+them.
+
+![](/post/tutorial/figs/rstudio2.png)
+
+
+### Help
+
+A lot of help is available in RStudio in the help tab that you should
+feel free to investigate. We merely point out a few.
+
+![](/post/tutorial/figs/rstudio3.png)
+
+When anyone installs R, there is a set of recommended packages that is
+always installed. So your _installed packages_ will reflect that. As
+we proceed, you will have to install many packages and that list will,
+of course, grow.
+
+### Installing Packages
+
+There are world-wide R package repositories or Comprehensive R Archive
+Network (CRAN) sites that allow packages to be downloaded and
+installed. You almost never have to directly work with them since
+RStudio makes it easy to install the packages as shown in the figure
+below, where we have clicked on the __Packages__ tab and clicked on
+the _Install_ button. Note how as you type the name of a package, you
+get auto-completion. (In fact, RStudio provides auto-completion even
+as you type R commands, showing you various options you can use for
+the commands!)
+
+![](/post/tutorial/figs/rstudio4.png)
+
+#### Activity
+
+At this point, you should go ahead and install the `dplyr`
+package. Press all the buttons necessary to make the install happen.
+After you have done the installation, go back to the __Help__ tab
+where you can click on the _Installed Packages_ link shown in the
+figure below.
+
+![](/post/tutorial/figs/rstudio3.png)
+
+####
+Navigate to the `dplyr` link and click on it so that you get to the
+help on the `dplyr` package. Two kinds of help are displayed:
+_Documentation_ and _Help Pages_.
+
+![](/post/tutorial/figs/rstudio5.png)
+
+####
+The _Help Pages_ document facilities that the package `dplyr` in
+detail. The _Documentation_ is often more useful, because they can
+contain user guides and _vignettes_ that are very useful for people
+learning about the package. So click on the _User guides..._
+
+![](/post/tutorial/figs/rstudio6.png)
+
+####
+Click on the _Introduction to dplyr_ vignette to see the vignette.
+
+![](/post/tutorial/figs/rstudio7.png)
+
+####
+_Vignettes, when present, are indispenable in learning
+about a package._ Not all packages provide vignettes, however!
+
+### Workspace
+
+As you use RStudio more, you will find yourself creating variables
+(like `x`, `y`, `z` above, except far more valuable) and it is
+desirable to save them. When you quit RStudio, you will be given a
+choice of saving your workspace. It is worth doing so if you have
+important things created.
+
+RStudio also a notion of projects and so you can keep project
+workspaces separate. Each such project can be designated a working
+folder so that `x` from one workspace does not clobber `x` from
+another. You can explore these options via the _File_ menu.
+

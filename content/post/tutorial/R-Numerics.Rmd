@@ -1,0 +1,47 @@
+---
+title: Linear Algebra and Numerical Methods
+author: Balasubramanian Narasimhan
+date: '2018-01-01'
+bibliography: ../bibtex/ipam2018.bib
+link-citations: true
+categories: []
+tags: []
+---
+
+### Matrices
+
+The function `matrix` can be used for creating matrices which are
+two-dimensional arrays.
+
+```{r}
+## Create a 3 by 2 matrix.
+m <- matrix(1:6, nrow = 3)
+m
+```
+
+Another way is to use existing vectors to _bind_ into a matrix.
+```{r}
+xx <- 1:3
+yy <- 4:6
+## Bind by columns
+(m2 <- cbind(xx, yy))
+## Bind by rows
+(m3 <- rbind(xx, yy))
+```
+
+The matrix `m2` has the same content as `m` above, but the columns
+have names `xx` and `yy` which can be used in subsetting/indexing.
+
+```{r}
+## Access element in row 1, column 2
+m[1, 2]
+## Access second column
+m[ , 2]
+## Do the same with matrix m2
+m2[, "yy"]
+## Access the third row of m
+m[3, ]
+```
+
+
+

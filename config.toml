@@ -1,0 +1,59 @@
+baseurl = "https://ipam2018.netlify.com"
+languageCode = "en-us"
+title = "IPAM 2018 Workshop"
+theme = "hugo-alabaster-theme"
+googleAnalytics = ""
+disqusShortname = ""
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "\\.rst$", "\\.Rhistory$"]
+
+[params]
+	name = ""
+	description = "Algorithmic Challenges in Protecting Privacy for Biomedical Data"
+	github_user   = "bnaras"
+	github_repo   = "ipam2018"
+	github_banner = true
+
+	custom_css = []
+	custom_js  = []
+
+	favicon = "favicon.ico"
+
+  #highlightjsVersion = "9.11.0"
+  #highlightjsCDN = "//cdn.bootcss.com"
+  #highlightjsLang = ["r", "yaml"]
+  #highlightjsTheme = "github"
+
+  MathJaxCDN = "//cdn.bootcss.com"
+  MathJaxVersion = "2.7.1"
+    
+[params.sidebar]
+	logo = "favicon.ico"
+	
+	github_button  = true
+	travis_button  = false
+	codecov_button = false
+	gratipay = ""
+
+	show_relations = true
+
+[params.footer]
+	copyright = "Balasubramanian Narasimhan"
+	show_powered_by = false
+
+[[menu.main]]
+    name = "Home"
+         identifier = "Level-01"
+    	 url = "index.html"
+	 weight = -22
+
+[[menu.main]]
+    name = "Github"
+    	 url = "https://github.com/bnaras/ipam2018"
+	 weight = -21
+
+[[menu.main]]
+    name = "Tutorial"
+        identifier = "tutorial"
+    	url = "post/tutorial/"
+	weight = -20
+

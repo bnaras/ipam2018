@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>IPAM 2018 Workshop</title>
+    <link>/</link>
+    <description>Recent content on IPAM 2018 Workshop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 01 Jan 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Data and Plots</title>
+      <link>/post/tutorial/r-data-import/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tutorial/r-data-import/</guid>
+      <description>Datasets R comes with many datasets built in. These are part of the datasets package that is always loaded in R. For example, the mtcars dataset is a well-known dataset from Motor Trend magazine, documenting fuel consumption and vehicle characteristics for a number of vehicles. At the R console, typing mtcars will print the entire dataset.
+You can find help on datasets as usual using the Help tab in RStudio, clicking on the Packages link and navigating to the datasets package.</description>
+    </item>
+    
+    <item>
+      <title>Distributed Cox Regression</title>
+      <link>/post/tutorial/homomorphing-dhcox/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tutorial/homomorphing-dhcox/</guid>
+      <description>Introduction It is only a short way from the toy MLE example to a more useful example using Cox regression.
+But first, we need the survival package.
+if (!require(&amp;quot;survival&amp;quot;)) { stop(&amp;quot;this vignette requires the survival package&amp;quot;) } We generate some simulated data for the purpose of this example. We will have three sites each with patient data (sizes 1000, 500 and 1500) respectively, containing
+ sex (0, 1) for male/female age between 40 and 70 a biomarker bm a time to some event of interest an indicator event which is 1 if an event was observed and 0 otherwise.</description>
+    </item>
+    
+    <item>
+      <title>Distributed and Privacy-Preserving Computations in R</title>
+      <link>/post/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/</guid>
+      <description>Abstract The R programming environment provides a rich suite of methods and algorithms for statistical model fitting and computation in general. The exploratory interface of R makes it an ideal platform for prototyping, analyzing and deploying new algorithms in an open and extensible manner. This tutorial will begin with a short self-contained introduction to R and its package mechanism for programming extensions. We will then discuss some packages for distributed, cryptographic, homomorphic, and differential privacy computations.</description>
+    </item>
+    
+    <item>
+      <title>Homomorphic Computations</title>
+      <link>/post/tutorial/homomorphing-intro/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tutorial/homomorphing-intro/</guid>
+      <description>A homomorphism is a structure-preserving map from one algebraic structure to another; see Wikipedia. Privacy experts are interested in homomorphic computation because it offers a way to perform computations on encrypted data, either in a distributed setting or in the cloud, thereby handling many of the headaches associated with storing/moving/anonymizing data. Homomorphic computation also finds application in secure voting, verifyable computing etc.
+A homomorphic encryption scheme is one that provides such a homomorphism along with the infrastructure to carry out the computations.</description>
+    </item>
+    
+    <item>
+      <title>Homomorphic Linear Regression</title>
+      <link>/post/tutorial/homomorphing-regression/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tutorial/homomorphing-regression/</guid>
+      <description>Note This example was communicated to me by Kee Siong Ng. I have adapted it for use here.
+ A Synthetic Data Set n &amp;lt;- 50 x1 = 11:(10+n) x2 = runif(n,5,95) x3 = rbinom(n,1,0.5) x = data.frame(x1,x2,x3) x = scale(x) x = data.frame(1,x) # the intercept is handled using a column of 1&amp;#39;s sigma = 1.4 eps = rnorm(x1, 0, sigma) # generate noise vector b = c(17, -2.5, 0.</description>
+    </item>
+    
+    <item>
+      <title>Lasso on Vertically Partitioned Data</title>
+      <link>/post/tutorial/vertical-partitioned-lasso/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tutorial/vertical-partitioned-lasso/</guid>
+      <description>Implementing Lasso on vertically partitioned data provides some information on the issues with vertically partitioned data.
+Consider a dataset with response \(y\) where the predictor matrix \(X\) is vertically partitioned among three sites.
+\[ X = [X_1, X_2, X_3] \]
+where the combined \(X\) is \(n\times p\), each \(X_i\) is \(n\times p_k\), for \(k= 1, 2, 3\), and \(\sum_{i=1}^3 p_k = p.\)
+We wish to fit a lasso model:
+\[ \begin{array}{ll} \underset{\beta}{\mbox{minimize}} &amp;amp; ||y - X\beta||_2^2 + \lambda ||\beta||_1.</description>
+    </item>
+    
+    <item>
+      <title>Lasso on Vertically Partitioned Data</title>
+      <link>/post/tutorial/vertically-partioned-lasso/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tutorial/vertically-partioned-lasso/</guid>
+      <description>Introduction Lasso on vertically partitioned data provides an illustrative example of the issues with vertically partitioned data.
+Consider a dataset with response \(y\) where the predictor matrix \(X\) is vertically partitioned among three sites.
+\[ X = [X_1, X_2, X_3] \]
+where \(X\) is \(n\times p\), \(X_i\) is \(n\times p_k\), \(k= 1, 2, 3\) and \(\sum_{i=1}^3 p_k = p.\)
+We wish to fit a lasso model:
+[
+\begin{array}{ll} &amp;amp; |y - X|_2^2 + ||_1).</description>
+    </item>
+    
+    <item>
+      <title>Linear Algebra and Numerical Methods</title>
+      <link>/post/tutorial/r-numerics/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tutorial/r-numerics/</guid>
+      <description>Matrices The function matrix can be used for creating matrices which are two-dimensional arrays.
+## Create a 3 by 2 matrix. m &amp;lt;- matrix(1:6, nrow = 3) m ## [,1] [,2] ## [1,] 1 4 ## [2,] 2 5 ## [3,] 3 6 Another way is to use existing vectors to bind into a matrix.
+xx &amp;lt;- 1:3 yy &amp;lt;- 4:6 ## Bind by columns (m2 &amp;lt;- cbind(xx, yy)) ## xx yy ## [1,] 1 4 ## [2,] 2 5 ## [3,] 3 6 ## Bind by rows (m3 &amp;lt;- rbind(xx, yy)) ## [,1] [,2] [,3] ## xx 1 2 3 ## yy 4 5 6 The matrix m2 has the same content as m above, but the columns have names xx and yy which can be used in subsetting/indexing.</description>
+    </item>
+    
+    <item>
+      <title>Poisson MLE via Homomorphic Computation</title>
+      <link>/post/tutorial/homomorphing-mle/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tutorial/homomorphing-mle/</guid>
+      <description>Introduction We present a toy example of a homomorphic computation involving maximum likelihood estimation.
+Consider the following data motivated by an example from the mle function in the stats4 R package: we wish to estimate \(\lambda\), the Poisson parameter \(\lambda\) for randomly generated count data y below:
+library(stats4) set.seed(17822) y &amp;lt;- rpois(n = 40, lambda=10) # Easy one-dimensional MLE: nLL &amp;lt;- function(lambda) -sum(stats::dpois(y, lambda, log = TRUE)) fit0 &amp;lt;- mle(nLL, start = list(lambda = 5), nobs = NROW(y)) The function nLL is the negative log-likelihood of the data and the function mle computes the maximum likelihood estimate that can be printed out.</description>
+    </item>
+    
+    <item>
+      <title>Quick Intro to R</title>
+      <link>/post/tutorial/r-tour/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tutorial/r-tour/</guid>
+      <description>About the R language, briefly If you are used to traditional computing languages, you will find R different in many ways. The basic ideas behind R date back four decades and have a strong flavor of exploration: one can grapple with data, understand its structure, visualize it, summarize it etc. Therefore, a common way people use R is by typing a command and immediately see the results. (Of course, scripts can also be written and fed to R for batch execution.</description>
+    </item>
+    
+    <item>
+      <title>RStudio IDE</title>
+      <link>/post/tutorial/r-studio/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tutorial/r-studio/</guid>
+      <description>We can only cover some important aspects of RStudio here. There are a number of resources online, including Youtube videos that you can consult.
+When you start RStudio, you will get a view similar to what is shown below with perhaps slight differences.
+One can type commands directly into the console window and see results. For example, go ahead and type 1+1 to use R as a calculator and see the result.</description>
+    </item>
+    
+    <item>
+      <title>Set up R Development Tools</title>
+      <link>/post/tutorial/setup-r-dev/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tutorial/setup-r-dev/</guid>
+      <description>Components A complete programming and development environment requires the installation of
+ R system, C/C++ compilers, TeX and friends.   Compilers Compilers are freely available for Windows and Macs; see the FAQs for windows and Macs on CRAN. Be sure to use the toolchains provided on CRAN rather than something on the net.
+ MacOS requires installation of Xcode along with the command line tools via xcode --select.
+ Windows requires the installation of the RTools package provided by CRAN.</description>
+    </item>
+    
+    <item>
+      <title>Set up R and RStudio</title>
+      <link>/post/tutorial/setup-r/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tutorial/setup-r/</guid>
+      <description>Introduction R language implementations are freely available for Macs and Windows and and can be installed from any of the CRAN (Comprehensive R Archive Network) mirrors. RStudio is an IDE (Integrated Development Environment) for R and is also available in a free version.
+Go to the CRAN website and download it for your Mac or PC. (We assume no one is using Linux; if you are that advanced, then you already know what to do!</description>
+    </item>
+    
+    <item>
+      <title>Vertically Partitioned Data</title>
+      <link>/post/tutorial/vertical-partitioned-logistic-ridged/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tutorial/vertical-partitioned-logistic-ridged/</guid>
+      <description>Introduction Li et al. (2016) implement a logistic regression using vertically partitioned data.
+ Logistic Regression We first generate some synthetic data where we have 1000 observations and 20 parameters.
+suppressMessages(suppressWarnings(library(CVXR))) p &amp;lt;- 10 n &amp;lt;- 100 ##p &amp;lt;- 5 ##n &amp;lt;- 10 offset &amp;lt;- 0 sigma &amp;lt;- 3 DENSITY &amp;lt;- 0.2 set.seed(18321) beta_true &amp;lt;- stats::rnorm(p) X &amp;lt;- matrix(stats::rnorm(n*p, 0, 5), nrow = n, ncol = p) y &amp;lt;- sign(X %*% beta_true + offset + stats::rnorm(n, 0, sigma)) Y &amp;lt;- (y+1)/2 ## on 0, 1 scale.</description>
+    </item>
+    
+    <item>
+      <title>Vertically Partitioned Data</title>
+      <link>/post/tutorial/vertical-partitioning/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tutorial/vertical-partitioning/</guid>
+      <description>Introduction Li et al. (2016) implement a logistic regression using vertically partitioned data.
+ Logistic Regression We first generate some synthetic data where we have 1000 observations and 20 parameters.
+suppressMessages(suppressWarnings(library(CVXR))) p &amp;lt;- 10 n &amp;lt;- 100 ##p &amp;lt;- 5 ##n &amp;lt;- 10 offset &amp;lt;- 0 sigma &amp;lt;- 3 DENSITY &amp;lt;- 0.2 set.seed(18321) beta_true &amp;lt;- stats::rnorm(p) X &amp;lt;- matrix(stats::rnorm(n*p, 0, 5), nrow = n, ncol = p) y &amp;lt;- sign(X %*% beta_true + offset + stats::rnorm(n, 0, sigma)) Y &amp;lt;- (y+1)/2 ## on 0, 1 scale.</description>
+    </item>
+    
+    <item>
+      <title>IPAM 2018 Tutorial</title>
+      <link>/post/tutorial/</link>
+      <pubDate>Thu, 02 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tutorial/</guid>
+      <description>Topics  Set up R and RStudio Set up Development Tools Quick Tour of RStudio   Quick Tour of R  The R Language R Numerics R Packages R Web Technologies   Applications  Distributed Computation on Horizontally Partitioned Data Homomorphic Computations Vertically Partitioned Lasso Vertically Partitioned Logistic Fit   Computations on Encrypted Data  Homomorphic Computation Introduction Homomorphic MLE Estimation of a Poisson Parameter Homomorphic Distributed Cox Fit Privacy Preserving Linear Regression communicated by Kee Siong Ng.</description>
+    </item>
+    
+  </channel>
+</rss>

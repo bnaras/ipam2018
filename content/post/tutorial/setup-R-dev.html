@@ -1,0 +1,63 @@
+---
+title: Set up R Development Tools
+author: Balasubramanian Narasimhan
+date: '2018-01-01'
+bibliography: ../bibtex/ipam2018.bib
+link-citations: true
+categories: []
+tags: []
+---
+
+
+
+<section id="components" class="level2">
+<h2>Components</h2>
+<p>A complete programming and development environment requires the installation of</p>
+<ul>
+<li><code>R</code> system,</li>
+<li><code>C/C++</code> compilers,</li>
+<li><code>TeX</code> and friends.</li>
+</ul>
+</section>
+<section id="compilers" class="level2">
+<h2>Compilers</h2>
+<p>Compilers are freely available for Windows and Macs; see the <a href="https://cran.rstudio.com/faqs.html">FAQs for windows and Macs</a> on CRAN. Be sure to use the toolchains provided on CRAN rather than something on the net.</p>
+<ul>
+<li><p>MacOS requires installation of <a href="https://developer.apple.com/xcode/">Xcode</a> along with the command line tools via <code>xcode --select</code>.</p></li>
+<li><p>Windows requires the installation of the <a href="https://cran.rstudio.com/bin/windows/Rtools/">RTools</a> package provided by CRAN. On Windows, it is important to ensure that paths are set up correctly; so make sure you accept the defaults suggested by <code>RTools</code>.</p></li>
+</ul>
+<section id="macos-details" class="level3">
+<h3>MacOS Details</h3>
+<ol type="1">
+<li><p>Dowload and install <a href="https://developer.apple.com/xcode/">Xcode</a> from the Mac App store.</p></li>
+<li><p>Open a terminal and type <code>xcode --select</code> to install command line tools.</p></li>
+</ol>
+</section>
+<section id="windows-details" class="level3">
+<h3>Windows Details</h3>
+<ol type="1">
+<li>Download and install <a href="https://cran.rstudio.com/bin/windows/Rtools/Rtools34.exe">Rtools</a>, ensuring you select the option to modify paths.</li>
+<li>Include the path to the R binary in the <code>Rtools</code> installation. Otherwise, your installation won’t find the compilers.</li>
+</ol>
+</section>
+</section>
+<section id="tex" class="level2">
+<h2>TeX</h2>
+<ul>
+<li><p>For Macs, use <a href="https://tug.org/mactex/">MacTeX</a>.</p></li>
+<li><p>For Windows, either use <a href="https://miktex.org/download">MikTeX</a> or <a href="https://tug.org/texlive/acquire-netinstall.html">TeXlive</a>.</p></li>
+</ul>
+<p><a href="https://support.rstudio.com/hc/en-us/articles/200486498-Package-Development-Prerequisites">This R Studio Page</a> has some useful info on pre-requisites.</p>
+</section>
+<section id="pandoc" class="level2">
+<h2>Pandoc</h2>
+<p>Pandoc converts documents marked up in one format into another. It is no exaggeration to say that it has markedly made life better for all of us, like TeX did.</p>
+<section id="macos" class="level3">
+<h3>MacOS</h3>
+<p>Install pandoc using the <a href="https://github.com/jgm/pandoc/releases/download/2.0.6/pandoc-2.0.6-macOS.pkg">Mac Installer</a>.</p>
+</section>
+<section id="windows" class="level3">
+<h3>Windows</h3>
+<p>Install pandoc using the <a href="https://github.com/jgm/pandoc/releases/download/2.0.6/pandoc-2.0.6-windows.msi">Windows Installer</a>.</p>
+</section>
+</section>

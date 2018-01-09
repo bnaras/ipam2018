@@ -1,0 +1,79 @@
+---
+title: Set up R Development Tools
+author: Balasubramanian Narasimhan
+date: '2018-01-01'
+bibliography: ../bibtex/ipam2018.bib
+link-citations: true
+categories: []
+tags: []
+---
+
+## Components
+
+A complete programming and development environment requires the
+installation of 
+
+- `R` system,
+- `C/C++` compilers,
+- `TeX` and friends.
+
+## Compilers
+
+Compilers are freely available for Windows and Macs; see the
+[FAQs for windows and Macs](https://cran.rstudio.com/faqs.html) on
+CRAN. Be sure to use the toolchains provided on CRAN rather than
+something on the net.
+
+- MacOS requires installation of
+[Xcode](https://developer.apple.com/xcode/) along with the command
+line tools via `xcode --select`.
+
+- Windows requires the installation of the
+[RTools](https://cran.rstudio.com/bin/windows/Rtools/) package
+provided by CRAN. On Windows, it is important to ensure that paths are
+set up correctly; so make sure you accept the defaults suggested by
+`RTools`.
+
+### MacOS Details
+
+1. Dowload and install [Xcode](https://developer.apple.com/xcode/) from
+  the Mac App store. 
+
+2. Open a terminal and type `xcode --select` to install command line
+   tools.
+
+### Windows Details
+
+1. Download and install
+   [Rtools](https://cran.rstudio.com/bin/windows/Rtools/Rtools34.exe),
+   ensuring you select the option to modify paths.
+2. Include the path to the R binary in the `Rtools`
+   installation. Otherwise, your installation won't find the
+   compilers.
+
+## TeX
+
+- For Macs, use [MacTeX](https://tug.org/mactex/).
+
+- For Windows, either use
+  [MikTeX](https://miktex.org/download) or [TeXlive](https://tug.org/texlive/acquire-netinstall.html).
+
+[This R Studio
+Page](https://support.rstudio.com/hc/en-us/articles/200486498-Package-Development-Prerequisites)
+has some useful info on pre-requisites.
+
+## Pandoc
+
+Pandoc converts documents marked up in one format into another. It is
+no exaggeration to say that it has markedly made life better for all
+of us, like TeX did. 
+
+### MacOS
+
+Install pandoc using the [Mac
+Installer](https://github.com/jgm/pandoc/releases/download/2.0.6/pandoc-2.0.6-macOS.pkg).
+
+### Windows
+
+Install pandoc using the [Windows
+Installer](https://github.com/jgm/pandoc/releases/download/2.0.6/pandoc-2.0.6-windows.msi).
