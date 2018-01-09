@@ -54,6 +54,6 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "\\.rst$", "\\.
 [[menu.main]]
     name = "Tutorial"
         identifier = "tutorial"
-    	url = "post/tutorial/"
+    	url = "/post/tutorial/"
 	weight = -20
 
