@@ -77,21 +77,6 @@ We wish to fit a lasso model:
     </item>
     
     <item>
-      <title>Lasso on Vertically Partitioned Data</title>
-      <link>/post/tutorial/vertically-partioned-lasso/</link>
-      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/post/tutorial/vertically-partioned-lasso/</guid>
-      <description>Introduction Lasso on vertically partitioned data provides an illustrative example of the issues with vertically partitioned data.
-Consider a dataset with response \(y\) where the predictor matrix \(X\) is vertically partitioned among three sites.
-\[ X = [X_1, X_2, X_3] \]
-where \(X\) is \(n\times p\), \(X_i\) is \(n\times p_k\), \(k= 1, 2, 3\) and \(\sum_{i=1}^3 p_k = p.\)
-We wish to fit a lasso model:
-[
-\begin{array}{ll} &amp;amp; |y - X|_2^2 + ||_1).</description>
-    </item>
-    
-    <item>
       <title>Linear Algebra and Numerical Methods</title>
       <link>/post/tutorial/r-numerics/</link>
       <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
@@ -161,17 +146,6 @@ Go to the CRAN website and download it for your Mac or PC. (We assume no one is 
       <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/tutorial/vertical-partitioned-logistic-ridged/</guid>
-      <description>Introduction Li et al. (2016) implement a logistic regression using vertically partitioned data.
- Logistic Regression We first generate some synthetic data where we have 1000 observations and 20 parameters.
-suppressMessages(suppressWarnings(library(CVXR))) p &amp;lt;- 10 n &amp;lt;- 100 ##p &amp;lt;- 5 ##n &amp;lt;- 10 offset &amp;lt;- 0 sigma &amp;lt;- 3 DENSITY &amp;lt;- 0.2 set.seed(18321) beta_true &amp;lt;- stats::rnorm(p) X &amp;lt;- matrix(stats::rnorm(n*p, 0, 5), nrow = n, ncol = p) y &amp;lt;- sign(X %*% beta_true + offset + stats::rnorm(n, 0, sigma)) Y &amp;lt;- (y+1)/2 ## on 0, 1 scale.</description>
-    </item>
-    
-    <item>
-      <title>Vertically Partitioned Data</title>
-      <link>/post/tutorial/vertical-partitioning/</link>
-      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/post/tutorial/vertical-partitioning/</guid>
       <description>Introduction Li et al. (2016) implement a logistic regression using vertically partitioned data.
  Logistic Regression We first generate some synthetic data where we have 1000 observations and 20 parameters.
 suppressMessages(suppressWarnings(library(CVXR))) p &amp;lt;- 10 n &amp;lt;- 100 ##p &amp;lt;- 5 ##n &amp;lt;- 10 offset &amp;lt;- 0 sigma &amp;lt;- 3 DENSITY &amp;lt;- 0.2 set.seed(18321) beta_true &amp;lt;- stats::rnorm(p) X &amp;lt;- matrix(stats::rnorm(n*p, 0, 5), nrow = n, ncol = p) y &amp;lt;- sign(X %*% beta_true + offset + stats::rnorm(n, 0, sigma)) Y &amp;lt;- (y+1)/2 ## on 0, 1 scale.</description>
