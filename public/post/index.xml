@@ -157,7 +157,7 @@ suppressMessages(suppressWarnings(library(CVXR))) p &amp;lt;- 10 n &amp;lt;- 100
       <pubDate>Thu, 02 Nov 2017 00:00:00 +0000</pubDate>
       
       <guid>/post/tutorial/</guid>
-      <description>R-related Stuff  Set up R and RStudio Set up Development Tools Quick Tour of RStudio The R Language R Numerics   R Packages  R Packages R Web Technologies [Convex Optimization in R] We discuss the recent package CVXR that provides a domain specific language for Convex Optimization.   Applications  Distributed Computation on Horizontally Partitioned Data We discuss an open approach for distributed computing using the Narasimhan et al.</description>
+      <description>R-related Stuff  Set up R and RStudio Set up Development Tools Optional Quick Tour of RStudio Summary of the R Language   R Packages  R Packages R Web Technologies [Convex Optimization in R] We discuss the recent package CVXR that provides a domain specific language for Convex Optimization.   Applications  Distributed Computation on Horizontally Partitioned Data We discuss an open approach for distributed computing using the Narasimhan et al.</description>
     </item>
     
   </channel>
