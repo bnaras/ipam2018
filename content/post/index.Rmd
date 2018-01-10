@@ -6,6 +6,13 @@ bibliography: bibtex/ipam2018.bib
 type: homepage
 ---
 
+_Balasubramanian Narasimhan_
+
+_Department of Biomedical Data Sciences and Department of Statistics_
+
+_Stanford University_
+
+
 ## Abstract
 
 The R programming environment provides a rich suite of methods and
