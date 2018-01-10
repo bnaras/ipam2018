@@ -53,16 +53,6 @@ A homomorphic encryption scheme is one that provides such a homomorphism along w
     </item>
     
     <item>
-      <title>Homomorphic Linear Regression</title>
-      <link>/post/tutorial/homomorphing-regression/</link>
-      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/post/tutorial/homomorphing-regression/</guid>
-      <description>Note This example was communicated to me by Kee Siong Ng. I have adapted it for use here.
- A Synthetic Data Set n &amp;lt;- 50 x1 = 11:(10+n) x2 = runif(n,5,95) x3 = rbinom(n,1,0.5) x = data.frame(x1,x2,x3) x = scale(x) x = data.frame(1,x) # the intercept is handled using a column of 1&amp;#39;s sigma = 1.4 eps = rnorm(x1, 0, sigma) # generate noise vector b = c(17, -2.5, 0.</description>
-    </item>
-    
-    <item>
       <title>Lasso on Vertically Partitioned Data</title>
       <link>/post/tutorial/vertical-partitioned-lasso/</link>
       <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
@@ -84,6 +74,17 @@ We wish to fit a lasso model:</description>
       <description>Introduction We present a toy example of a homomorphic computation involving maximum likelihood estimation.
 Consider the following data motivated by an example from the mle function in the stats4 R package: we wish to estimate \(\lambda\), the Poisson parameter \(\lambda\) for randomly generated count data y below:
 library(stats4) set.seed(17822) y &amp;lt;- rpois(n = 40, lambda=10) # Easy one-dimensional MLE: nLL &amp;lt;- function(lambda) -sum(stats::dpois(y, lambda, log = TRUE)) fit0 &amp;lt;- mle(nLL, start = list(lambda = 5), nobs = NROW(y)) The function nLL is the negative log-likelihood of the data and the function mle computes the maximum likelihood estimate that can be printed out.</description>
+    </item>
+    
+    <item>
+      <title>Privacy Preserving Homomorphic Linear Regression</title>
+      <link>/post/tutorial/homomorphing-regression/</link>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tutorial/homomorphing-regression/</guid>
+      <description>Problem Setup This example, based on the homomorpheR package, was communicated to me by Kee Siong Ng.
+ FIU holds the response vector y RE1 holds the data x[, 1:3] RE2 RE2 holds the data x[,4]  Together, they want to learn a linear model to predict y using x but in such a way that
+ nobody sees each other’s data, RE1 holds the coefficients for the variables it holds, which is not visible to others RE2 holds the coefficients for the variables it holds, which is not visible to others Prediction of a new instance requires the collaboration of RE1 and RE2  FIU first generates a public-private key pair using the Paillier scheme.</description>
     </item>
     
     <item>
@@ -147,7 +148,7 @@ The gram matrix for the global problem is a sum of the gram matrices for each pa
       <pubDate>Thu, 02 Nov 2017 00:00:00 +0000</pubDate>
       
       <guid>/post/tutorial/</guid>
-      <description>R-related Stuff  Set up R and RStudio Set up Development Tools Optional Quick Tour of RStudio Summary of the R Language   Two R Packages  OpenCPU allows one to call R over a REST API. Convex Optimization in R provides a Domain Specific Language for Convex Optimization.   Applications  Distributed Computation on Horizontally Partitioned Data We discuss an open approach for distributed computing using the distcomp (see Narasimhan et al.</description>
+      <description>R-related Stuff  Set up R and RStudio Set up Development Tools Optional Quick Tour of RStudio A drive-by summary of R   Two R Packages  OpenCPU allows one to call R over a REST API. Convex Optimization in R provides a Domain Specific Language for Convex Optimization.   Applications  Distributed Computation on Horizontally Partitioned Data We discuss an open approach for distributed computing using the distcomp (see Narasimhan et al.</description>
     </item>
     
   </channel>

@@ -422,4 +422,17 @@ matches as the following computation shows.
 -2 * logLik(fit)
 ```
 
+## Other Topologies
+
+Another communication strategy is to pair each site with a
+neighbor.
+
+- Each site $i$ sends a $E(l_i + r_i)$ and $E(l_i - r_i)$ to its
+  neighbors. 
+- Master then queries each site which responds with the $E(l_i^' \pm
+  r_i^')$ and $E(l_i^{''} \pm r_i{''})$. 
+  
+- Master sums all of these together to obtain $\sum_i l_i$
+
+
 ## References

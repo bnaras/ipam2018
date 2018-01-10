@@ -14,7 +14,7 @@ tags: []
 - [Set up R and RStudio](/post/tutorial/setup-R/)
 - [Set up Development Tools](/post/tutorial/setup-R-dev/) _Optional_
 - [Quick Tour of RStudio](/post/tutorial/R-Studio/)
-- [Summary of the R Language](/post/tutorial/R-Tour/)
+- [A drive-by summary of R](/post/tutorial/R-Tour/)
 
 ## Two R Packages
 - [OpenCPU](https://www.opencpu.org) allows one to call R over a REST
@@ -38,15 +38,19 @@ tags: []
 ## Computations on Encrypted Data
 
 - [Homomorphic Computation](/post/tutorial/homomorphing-intro/) We review some
-  basics of Homomorphic Computation.
+  basics of Homomorphic Computation.[Try!]
 - [Homomorphic MLE Estimation of a Poisson
   Parameter](/post/tutorial/homomorphing-mle/) We estimate a Poisson
-  parameter using encrypted data.
+  parameter using encrypted data. [Try!]
 - [Homomorphic Distributed Cox Fit](/post/tutorial/homomorphing-DHCox/) We fit a stratified Cox
   model using encrypted data.
 - [Privacy Preserving Linear
   Regression](/post/tutorial/homomorphing-regression) Using batch
   gradient descent, we perform a privacy preserving linear regression
   fit. This implementation communicated by Kee Siong Ng.
+
+## Collaborators and Acknowledgements
+
+- [Collaborators and support](/post/tutorial/collab.pdf)
 
 ## References

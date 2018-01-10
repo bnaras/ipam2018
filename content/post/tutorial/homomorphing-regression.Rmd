@@ -1,6 +1,6 @@
 ---
-title: "Homomorphic Linear Regression"
-author: Kee Siong Ng
+title: "Privacy Preserving Homomorphic Linear Regression"
+author: Kee Siong Ng (adapted by Balasubramanian Narasimhan)
 date: '2018-01-01'
 bibliography: ../bibtex/ipam2018.bib
 link-citations: true
@@ -8,10 +8,30 @@ categories: []
 tags: []
 ---
 
-## Note
+## Problem Setup
 
-This example was communicated to me by Kee Siong Ng. I have adapted it
-for use here. 
+This example, based on the `homomorpheR` package, was communicated to
+me by Kee Siong Ng. 
+
+- `FIU` holds the response vector `y`
+- `RE1` holds the data `x[, 1:3]`
+- `RE2` RE2 holds the data `x[,4]`
+
+Together, they want to learn a linear model to predict `y` using `x`
+but in such a way that
+
+- nobody sees each other's data,
+- `RE1` holds the coefficients for the variables it holds, which is
+  not visible to others
+- `RE2` holds the coefficients for the variables it holds, which is
+  not visible to others
+- Prediction of a new instance requires the collaboration of `RE1` and `RE2`
+
+`FIU` first generates a public-private key pair using the Paillier
+scheme. The public key is used by `RE1` and `RE2` to encrypt their
+data and do the computations. The private key is visible only to `FIU`
+and is used by the `FIU` to decrypt data sent from the `RE`s.
+
 
 ## A Synthetic Data Set
 
@@ -31,13 +51,14 @@ eps = rnorm(x1, 0, sigma)  # generate noise vector
 b = c(17, -2.5, 0.5,-5.2)   # the real model coefficient
 
 y = b[1] + b[2] * x[,2] + b[3] * x[,3] + b[4] * x[,4] + scale(eps)  # target variable
+```
 
-##############################################################################
-# Batch Gradient Descent algorithm, here for benchmarking and error checking
-# For a refresher on the algorithm, read the first 6 pages of
-#    http://cs229.stanford.edu/notes/cs229-notes1.pdf
-##############################################################################
+## Batch Gradient Descent
 
+This example uses a batch gradient descent algorithm for fitting the
+model.
+
+```{r}
 lm_sgd <- function(iter, rate) {
   theta = c(0,0,0,0)
   alpha = rate
@@ -54,29 +75,20 @@ lm_sgd <- function(iter, rate) {
   }
   print(theta)
 }
+```
 
+As a check, we can run 100 iterations to see if it works.
+
+```{r}
 lm_sgd(100, 0.1)
+```
 
-##########################################################################################
-# Distributed Privacy-Preserving Gradient Descent algorithm for Linear Regression
-##########################################################################################
-# Basic setup:
-# FIU holds the vector y of true labels
-# RE1 holds the data x[,1:3]
-# RE2 holds the data x[,4]
-# Together, they want to learn a linear model to predict y using x but in such a way that
-# - nobody sees each other's data,
-# - RE1 holds the coefficients for the variables it holds, which is not visible to others
-# - RE2 holds the coefficients for the variables it holds, which is not visible to others
-# - Prediction of a new instance requires the collaboration of RE1 and RE2
-###########################################################################################
+## Some Tools
 
-###############################################################################################
-# FIU first generates a public-private key pair using the Paillier scheme
-# Public key is used by RE1 and RE2 to encrypt their data and do maths on them.
-# Private key is visible only to FIU and is used by the FIU to decrypt data sent from the REs.
-###########
+Some tools are needed for performing computations using real
+numbers. Encryption schemes all work on large integers. 
 
+```{r}
 library(homomorpheR)
 
 keypair = PaillierKeyPair$new(modulusBits = 1024)
@@ -256,11 +268,12 @@ smultenc = function(x,y) {
 # decrypt(smultenc(ten, 6))
 # decrypt(smultenc(c(five,ten), 4))
 # decrypt(smultenc(c(five,ten), -4))
+```
 
-##################################################################
-# Here are the functions to setup the parties in the computation
-#################
 
+Here are the functions to setup the parties in the computation.
+
+```{r}
 x1 = c()  # these 3 vectors belong to RE1
 x2 = c()
 x3 = c()
@@ -281,21 +294,23 @@ mastersetup = function() {
   re1setup()
   re2setup()
 }
+```
 
-############
-# This function computes the gradient: the difference between predicted values (encrypted) by REs and the true values
-# Note the gradient is unencrypted. We could encrypt it if necessary.
-#########
+The function `master_grad` below computes the gradient: the difference between predicted values (encrypted) by `RE`s and the true values
 
+Note the gradient is unencrypted. We could encrypt it if necessary.
+
+```{r}
 master_grad <- function(x) {
   xd = decrypt(x)
   xd - y
   # subenc(xd, y)
 }
+```
 
-###########
-# This is used to compute the partial predictions based on RE1's data only. The values are encrypted.
-###########
+Function `re1pred` computes the partial predictions based on `RE1` data only. The values are encrypted.
+
+```{r}
 re1pred <- function() {
    # return (theta1 * x[,1] + theta2 * x[,2] + theta3 * x[,3])
   return (addenc(smultenc(x1, theta1),
@@ -303,26 +318,32 @@ re1pred <- function() {
                  smultenc(x3, theta3)))
           )
 }
+```
 
-#############
-# Here, RE2 takes the partial prediction of RE1 and then add its contribution to the prediction.
-# The final prediction values are encrypted.
-###########
 
+`RE2` takes the partial prediction of `RE1` and then add its
+contribution to the prediction. The final prediction values are
+encrypted.
+
+```{r}
 re2pred <- function(z) {
    # return (z + theta4 * x[,4])
   return (addenc(z, smultenc(x4, theta4)))
 }
+```
 
+We need a variable to keep track of progress.
+
+```{r}
 cadj = c(0,0,0,0) # a variable we want to print to keep track of progress
+```
 
-#############
-# This is RE1's model update function and implements the gradient descent update formula.
-# It takes the gradient (unencrypted) from the master and then adjust its own theta.
-# The whole computation is assumed to take place within RE1 and no encryption is required.
-# We can encrypt the whole thing if we want to.
-###########
+`RE1` model update function and implements the gradient descent update formula.
+It takes the gradient (unencrypted) from the master and then adjust
+its own theta. The whole computation is assumed to take place within
+`RE1` and no encryption is required. 
 
+```{r}
 re1update <- function(z) {
    theta1 <<- theta1 - (alpha / n) * sum(z * x[,1])
    theta2 <<- theta2 - (alpha / n) * sum(z * x[,2])
@@ -331,24 +352,23 @@ re1update <- function(z) {
    cadj[2] <<- sum(z * x[,2])
    cadj[3] <<- sum(z * x[,3])
 }
+```
 
-#############
-# This is RE2's model update function and implements the gradient descent update formula.
-# It takes the gradient (unencrypted) from the master and then adjust its own theta.
-# The whole computation is assumed to take place within RE1 and no encryption is required.
-# We can encrypt the whole thing if we want to.
-###########
+`RE2` model update function which implements the gradient descent
+update formula. 
 
+```{r}
 re2update <- function(z) {
    theta4 <<- theta4 - (alpha / n) * sum(z * x[,4])
    cadj[4] <<- sum(z * x[,4])
 }
+```
 
-##########################################################################
-# Finally, this is the privacy-preserving linear regression algorithm.
-# The algorithm can be sensitive to the learning rate.
-##########################################################################
+After all that, we can now run the privacy-preserving linear
+regression algorithm. The algorithm can be sensitive to the learning
+rate.
 
+```{r}
 pp_lm_sgd <- function(iter, rate) {
 
   theta1 <<- 0
@@ -369,13 +389,23 @@ pp_lm_sgd <- function(iter, rate) {
   }
   print(c(theta1,theta2,theta3,theta4))
 }
+```
 
+## Results
+
+First the standard result, not private.
+
+```{r}
 model0 = lm_sgd(100, 0.1)
+```
+
+Next the privacy preserving version.
+
+```{r}
 model1 = pp_lm_sgd(100, 0.1)
+```
 
 
-
-## References
 
 
 

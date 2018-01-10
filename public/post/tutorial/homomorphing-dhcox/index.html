@@ -364,6 +364,15 @@ print(ourSummary(fit), digits = 4)</code></pre>
 <pre><code>## &#39;log Lik.&#39; 19127.35 (df=3)</code></pre>
 </section>
 </section>
+<section id="other-topologies" class="level2">
+<h2>Other Topologies</h2>
+<p>Another communication strategy is to pair each site with a neighbor.</p>
+<ul>
+<li>Each site <span class="math inline">\(i\)</span> sends a <span class="math inline">\(E(l_i + r_i)\)</span> and <span class="math inline">\(E(l_i - r_i)\)</span> to its neighbors.</li>
+<li><p>Master then queries each site which responds with the <span class="math inline">\(E(l_i^&#39; \pm r_i^&#39;)\)</span> and <span class="math inline">\(E(l_i^{&#39;&#39;} \pm r_i{&#39;&#39;})\)</span>.</p></li>
+<li><p>Master sums all of these together to obtain <span class="math inline">\(\sum_i l_i\)</span></p></li>
+</ul>
+</section>
 <section id="references" class="level2 unnumbered">
 <h2>References</h2>
 <div id="refs" class="references">
