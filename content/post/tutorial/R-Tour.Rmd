@@ -199,15 +199,30 @@ m[3, ]
   
 ## R Packages
 
-[CRAN](https://cloud.r-project.org) hosts over 12K packages. Not all
-are of great quality.  
+[CRAN](https://cloud.r-project.org) hosts over 12K packages. 
 
-- CRAN Taskviews provide an excellent summary of packages useful for a
-  specific area.
-  
-- We will focus on two packages
-  [`opencpu`](https://cran.r-project.org/package=opencpu) and 
-  [`CVXR`](https://cran.r-project.org/package=CVXR) that we will use
-  for demonstrations.
-  
+There are several packages I see on CRAN related to differential
+privacy for instance. 
+
+- [`CDF.PSIdekick`](https://cran.r-project.org/package=CDF.PSIdekick)
+
+Designed by and for the community of differential privacy algorithm
+developers. It can be used to empirically evaluate and visualize
+Cumulative Distribution Functions incorporating noise that satisfies
+differential privacy, with numerous options made to streamline
+collection of utility measurements across variations of key
+parameters, such as epsilon, domain size, sample size, data shape,
+etc. Developed by researchers at Harvard PSI.
+
+- [PrivateLR](https://cran.r-project.org/package=PrivateLR) 
+
+PrivateLR implements two differentially private algorithms for
+estimating L2-regularized logistic regression coefficients. 
+
+- [diffpriv](https://cran.r-project.org/package=diffpriv) 
+
+An implementation of major general-purpose mechanisms for privatizing
+statistics, models, and machine learners, within the framework of
+differential privacy
+
   
