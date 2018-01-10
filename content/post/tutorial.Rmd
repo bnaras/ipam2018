@@ -16,25 +16,24 @@ tags: []
 - [Quick Tour of RStudio](/post/tutorial/R-Studio/)
 - [Summary of the R Language](/post/tutorial/R-Tour/)
 
-## R Packages
-- [R Packages](/post/tutorial/R-Packages/)
-- [R Web Technologies](/post/tutorial/R-Web-Tech/)
-- [Convex Optimization in R] We discuss the recent package
-  [`CVXR`](https://cvxr.rbind.io) that provides a domain specific
-  language for Convex Optimization.
+## Two R Packages
+- [OpenCPU](https://www.opencpu.org) allows one to call R over a REST
+  API. 
+- [Convex Optimization in R](https://cvxr.rbind.io) provides a Domain
+  Specific Language for Convex Optimization. 
 
 ## Applications 
 
 - [Distributed Computation on Horizontally Partitioned
-  Data](/post/tutorial/horizontal-partioning/) We discuss an open
-  approach for distributed computing using the @distcomp package. 
+  Data](/post/tutorial/ipam2018-distcomp.pdf) We discuss an open
+  approach for distributed computing using the `distcomp` [see @distcomp] package. 
 - [Vertically Partitioned Logistic
   Fit](/post/tutorial/vertical-partitioned-logistic-ridged/) We show
   how the Convex Optimization Tools in R can be leveraged to implement
   the approach of @doi:10.1093/jamia/ocv146 . 
-- [Vertically Partitioned Lasso](/post/tutorial/vertical-partitioned-lasso/) We discuss a
-  direct approach to understand the troublesome issues.
-
+- [Vertically Partitioned
+  Lasso](/post/tutorial/vertical-partitioned-lasso/) What happens when
+  we try a direct approach to Lasso?
 
 ## Computations on Encrypted Data
 
@@ -43,9 +42,8 @@ tags: []
 - [Homomorphic MLE Estimation of a Poisson
   Parameter](/post/tutorial/homomorphing-mle/) We estimate a Poisson
   parameter using encrypted data.
-- [Homomorphic Distributed Cox
-  Fit](/post/tutorial/homomorphing-DHCox/) We fit a Stratified Cox
-  Model using encrypted data.
+- [Homomorphic Distributed Cox Fit](/post/tutorial/homomorphing-DHCox/) We fit a stratified Cox
+  model using encrypted data.
 - [Privacy Preserving Linear
   Regression](/post/tutorial/homomorphing-regression) Using batch
   gradient descent, we perform a privacy preserving linear regression

@@ -8,8 +8,9 @@ categories: []
 tags: []
 ---
 
-Implementing Lasso on vertically partitioned data provides some
-information on the issues with vertically partitioned data.
+Implementing Lasso on vertically partitioned data in a naive fashion
+provides some information on the issues with vertically partitioned
+data.
 
 Consider a dataset with response $y$ where the predictor matrix $X$ is
 vertically partitioned among three sites. 

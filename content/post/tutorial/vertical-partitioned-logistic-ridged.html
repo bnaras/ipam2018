@@ -13,62 +13,88 @@ tags: []
 <section id="introduction" class="level2">
 <h2>Introduction</h2>
 <p><span class="citation" data-cites="doi:10.1093/jamia/ocv146">Li et al. (<a href="#ref-doi:10.1093/jamia/ocv146">2016</a>)</span> implement a logistic regression using vertically partitioned data.</p>
+<p><img src="/post/tutorial/figs/col-part.png" /></p>
+<p>They consider the (ridged) model:</p>
+<p><span class="math display">\[ 
+\begin{array}{ll} 
+\underset{\beta}{\mbox{minimize}} &amp; \sum_{i=1}^n \log{(1+exp(-Y_i{\mathbf
+\beta X_i})} + \frac{\lambda}{2} ||\beta||_2^2. 
+\end{array}
+\]</span></p>
+<p>To solve this problem in the vertically partitioned setting, they exploit two facts.</p>
+<ol type="1">
+<li>The gram matrix for the global problem is a sum of the gram matrices for each partition:</li>
+</ol>
+<p><span class="math display">\[
+K = XX^T = \sum_{i=1}^K X_iX_i^T
+\]</span></p>
+<ol start="2" type="1">
+<li>The <em>dual</em> problem can be formulated, which is:</li>
+</ol>
+<p><span class="math display">\[ 
+\begin{array}{ll} 
+\underset{\beta}{\mbox{minimize}} &amp;
+\frac{1}{2\lambda}\sum_{i,j}\alpha_i \alpha_j Y_i Y_j X_j^T X_i -
+\sum_{i} L(\alpha_i)
+\end{array}
+\]</span> where <span class="math inline">\(L(\alpha_i) = -\alpha_i\log{\alpha_i} - (1-\alpha_i)\log{(1-\alpha_i)}\)</span>.</p>
+<p>Note also that:</p>
+<ul>
+<li>There are as many parameters (<span class="math inline">\(\alpha_i\)</span>) in the dual as observations.</li>
+<li>The <span class="math inline">\(Y\)</span> is shared among sites.</li>
+</ul>
 </section>
-<section id="logistic-regression" class="level2">
-<h2>Logistic Regression</h2>
+<section id="implementation" class="level2">
+<h2>Implementation</h2>
 <p>We first generate some synthetic data where we have 1000 observations and 20 parameters.</p>
-<pre class="r"><code>suppressMessages(suppressWarnings(library(CVXR)))
-p &lt;- 10
+<pre class="r"><code>p &lt;- 10
 n &lt;- 100
-##p &lt;- 5
-##n &lt;- 10
-offset &lt;- 0
 sigma &lt;- 3
 DENSITY &lt;- 0.2
 
 set.seed(18321)
 beta_true &lt;- stats::rnorm(p)
 X &lt;- matrix(stats::rnorm(n*p, 0, 5), nrow = n, ncol = p)
-y &lt;- sign(X %*% beta_true + offset + stats::rnorm(n, 0, sigma))
+y &lt;- sign(X %*% beta_true + stats::rnorm(n, 0, sigma))
 Y &lt;- (y+1)/2  ## on 0, 1 scale.</code></pre>
-<p>A basic logistic regression model can be fit using <code>glm</code>.</p>
-<pre class="r"><code>g &lt;- glm(Y ~ 0 + X, family=&quot;binomial&quot;)
-y.pred &lt;- ifelse(predict(g, newdata = as.data.frame(X), type=&quot;response&quot;) &gt; 0.5, 1, 0)
-knitr::kable(table(y, y.pred))</code></pre>
-<pre class="r"><code>suppressWarnings(suppressMessages(library(CVXR)))
-beta &lt;- Variable(p)
-obj &lt;- -sum(X[y &lt;= 0, ] %*% beta) - sum(logistic(-X %*% beta))
-prob &lt;- Problem(Maximize(obj))
-result &lt;- solve(prob)
-beta_value &lt;- result$getValue(beta)</code></pre>
 </section>
-<section id="ridged-version" class="level2">
-<h2>Ridged Version</h2>
-<p>However, it is common to fit penalized models, such as ridged version where a parameter <span class="math inline">\(\lambda\)</span> controls the smoothness.</p>
-<p>Solve for <span class="math inline">\(\lambda = 5.\)</span></p>
-<pre class="r"><code>beta &lt;- Variable(p)
+<section id="the-primal-problem" class="level2">
+<h2>The Primal Problem</h2>
+<p>We shall use a parameter <span class="math inline">\(\lambda = 5\)</span> for concreteness. The problem can be stated directly using <code>CVXR</code>.</p>
+<pre class="r"><code>suppressMessages(suppressWarnings(library(CVXR)))
+beta &lt;- Variable(p)
 lambda &lt;- 5
 loss &lt;- sum_entries(logistic(-mul_elemwise(y, X %*% beta))) + lambda/2 * sum_squares(beta)
-problem &lt;- Problem(Minimize(loss))
-res &lt;- solve(problem)
-beta_primal &lt;- res$getValue(beta)</code></pre>
+primal_problem &lt;- Problem(Minimize(loss))
+primal_result &lt;- solve(primal_problem)
+beta_primal &lt;- primal_result$getValue(beta)
+print(beta_primal)</code></pre>
+<pre><code>##             [,1]
+##  [1,]  0.4405501
+##  [2,]  0.4567835
+##  [3,] -0.1042528
+##  [4,] -0.1972774
+##  [5,] -0.5927040
+##  [6,] -0.4398515
+##  [7,] -0.3880561
+##  [8,] -0.4661118
+##  [9,] -0.7004535
+## [10,] -0.1017521</code></pre>
 </section>
-<section id="vertical-partitioning" class="level2">
-<h2>Vertical Partitioning</h2>
-<p>First check that the dual solves the same problem. Here is the dual</p>
+<section id="the-dual-problem" class="level2">
+<h2>The Dual Problem</h2>
+<p>We first check that the dual solves the same problem. Here is the dual, once again stated directly in <code>CVXR</code>.</p>
 <pre class="r"><code>n &lt;- length(y)
 alpha &lt;- Variable(n)
 XX &lt;- as.numeric(y) * X
 tXX &lt;- t(XX)
 K &lt;- XX %*% tXX
 obj &lt;- 0.5 * quad_form(alpha, K) / lambda - sum(entr(alpha) + entr(1-alpha))
-vert_primal &lt;- Problem(Minimize(obj))
-result &lt;- solve(vert_primal)
-alphaValue &lt;- result$getValue(alpha)
-##print(alphaValue)
+dual_problem &lt;- Problem(Minimize(obj))
+dual_result &lt;- solve(dual_problem)
+alphaValue &lt;- dual_result$getValue(alpha)
 beta_dual &lt;- tXX %*% alphaValue / lambda
-##y * (X %*% beta)
-cbind(beta_primal, beta_dual)</code></pre>
+print(cbind(beta_primal, beta_dual))</code></pre>
 <pre><code>##             [,1]       [,2]
 ##  [1,]  0.4405501  0.4405501
 ##  [2,]  0.4567835  0.4567835
@@ -82,8 +108,8 @@ cbind(beta_primal, beta_dual)</code></pre>
 ## [10,] -0.1017521 -0.1017521</code></pre>
 <p>They should match.</p>
 </section>
-<section id="split-version." class="level2">
-<h2>Split version.</h2>
+<section id="the-dual-problem-using-partitioned-data" class="level2">
+<h2>The Dual Problem using Partitioned Data</h2>
 <p>Here the data is vertically split.</p>
 <pre class="r"><code>splits &lt;- list(1:3, 4:6, 7:10)
 Xs &lt;- lapply(splits, function(ind) X[, ind])
@@ -96,20 +122,19 @@ XXs &lt;- lapply(Xs, function(x) {
     list(XX, tXX)
 })
 
+## The Aggregation Step
 K &lt;- Reduce(&quot;+&quot;, lapply(XXs, function(l) l[[1L]] %*% l[[2L]]))
 
 obj &lt;- 0.5 * quad_form(alpha, K) / lambda - sum(entr(alpha) + entr(1-alpha))
-vert_dual &lt;- Problem(Minimize(obj))
-result &lt;- solve(vert_dual)
-alphaValue &lt;- result$getValue(alpha)
-##print(alphaValue)
+
+dual_partitioned_problem &lt;- Problem(Minimize(obj))
+dual_partitioned_result &lt;- solve(dual_partitioned_problem)
+alphaValue &lt;- dual_partitioned_result$getValue(alpha)
 
 tXX &lt;- do.call(rbind, lapply(XXs, function(x) x[[2]]))
 
-##beta_dual_split &lt;- rbind(tXX1, tXX2) %*% alphaValue / lambda
-beta_dual_split &lt;- tXX %*% alphaValue / lambda
-##y * (X %*% beta)
-cbind(beta_dual, beta_dual_split)</code></pre>
+beta_dual_partitioned &lt;- tXX %*% alphaValue / lambda
+print(cbind(beta_dual, beta_dual_partitioned))</code></pre>
 <pre><code>##             [,1]       [,2]
 ##  [1,]  0.4405501  0.4405501
 ##  [2,]  0.4567835  0.4567835
