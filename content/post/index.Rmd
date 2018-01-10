@@ -21,4 +21,7 @@ exercises. The goal is to provide the background and programming
 knowledge so that participants can develop their own packages
 implementing new algorithms.
 
-## References
+## Requirement
+
+A reasonably modern laptop with internet connectivity.
+
