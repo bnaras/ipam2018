@@ -42,6 +42,8 @@ if (!require(&amp;quot;survival&amp;quot;)) { stop(&amp;quot;this vignette requi
       <description>Balasubramanian Narasimhan
 Department of Biomedical Data Sciences and Department of Statistics
 Stanford University
+January 10-12, 2018
+IPAM, UCLA
 Abstract The R programming environment provides a rich suite of methods and algorithms for statistical model fitting and computation in general. The exploratory interface of R makes it an ideal platform for prototyping, analyzing and deploying new algorithms in an open and extensible manner. This tutorial will begin with a short self-contained introduction to R and its package mechanism for programming extensions.</description>
     </item>
     
