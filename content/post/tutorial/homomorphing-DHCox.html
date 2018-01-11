@@ -351,11 +351,12 @@ print(ourSummary(fit), digits = 4)</code></pre>
 </section>
 <section id="other-topologies" class="level2">
 <h2>Other Topologies</h2>
-<p>Another communication strategy is to pair each site with a neighbor.</p>
+<p>Another communication strategy is to pair each worker with a neighbor.</p>
 <ul>
-<li>Each site <span class="math inline">\(i\)</span> sends a <span class="math inline">\(E(l_i + r_i)\)</span> and <span class="math inline">\(E(l_i - r_i)\)</span> to its neighbors.</li>
-<li><p>Master then queries each site which responds with the <span class="math inline">\(E(l_i^&#39; \pm r_i^&#39;)\)</span> and <span class="math inline">\(E(l_i^{&#39;&#39;} \pm r_i{&#39;&#39;})\)</span>.</p></li>
-<li><p>Master sums all of these together to obtain <span class="math inline">\(\sum_i l_i\)</span></p></li>
+<li>Each site <span class="math inline">\(i\)</span> sends <span class="math inline">\(E(l_i + r_i)\)</span> and <span class="math inline">\(E(l_i - r_i)\)</span> to its neighbor workers.</li>
+<li>In a synchronization step, all workers sum up what they got from their neighbors.</li>
+<li>Master then queries each worker which responds the sum.</li>
+<li>Master sums all of these together.</li>
 </ul>
 </section>
 <section id="references" class="level2 unnumbered">

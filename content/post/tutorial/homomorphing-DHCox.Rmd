@@ -424,15 +424,14 @@ matches as the following computation shows.
 
 ## Other Topologies
 
-Another communication strategy is to pair each site with a
-neighbor.
+Another communication strategy is to pair each worker with a
+neighbor. 
 
-- Each site $i$ sends a $E(l_i + r_i)$ and $E(l_i - r_i)$ to its
-  neighbors. 
-- Master then queries each site which responds with the $E(l_i^' \pm
-  r_i^')$ and $E(l_i^{''} \pm r_i{''})$. 
-  
-- Master sums all of these together to obtain $\sum_i l_i$
-
+- Each site $i$ sends $E(l_i + r_i)$ and $E(l_i - r_i)$ to its
+  neighbor workers. 
+- In a synchronization step, all workers sum up what they got from
+  their neighbors.
+- Master then queries each worker which responds the sum. 
+- Master sums all of these together.
 
 ## References
